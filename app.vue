@@ -1,20 +1,13 @@
 <script setup>
-import { createClient } from "@supabase/supabase-js";
-
-const config = useRuntimeConfig();
-
-const supabase = createClient(
-  config.public.SUPABASE_URL,
-  config.public.SUPABASE_KEY
-);
-const countries = ref([]);
+const supabase = useSupabaseClient()
+const countries = ref([])
 
 async function getCountries() {
-  const { data } = await supabase.from("countries").select();
-  countries.value = data;
+  const { data } = await supabase.from('countries').select()
+  countries.value = data
 }
 
-getCountries();
+getCountries()
 </script>
 
 <template>
