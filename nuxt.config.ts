@@ -9,8 +9,18 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@nuxt/eslint',
     '@nuxtjs/supabase',
+    '@nuxt/ui',
   ],
   supabase: {
     redirect: false,
+  },
+  tailwindcss: {
+    cssPath: ['~/assets/css/tailwind.css', { injectPosition: 'first' }],
+    configPath: './tailwind.config.js',
+    exposeConfig: {
+      level: 2,
+    },
+    config: {},
+    viewer: true,
   },
 })
