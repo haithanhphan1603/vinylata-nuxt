@@ -8,5 +8,5 @@ appStore.fetchProducts()
 </script>
 
 <template>
-  <div>test</div>
+  <div>{{ products }}</div>
 </template>
