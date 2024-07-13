@@ -1,28 +1,30 @@
 <script lang="ts" setup>
-import AppLink from './AppLink.vue'
-import AppInput from './AppInput.vue'
-
 const searchKey = ref('')
 </script>
 
 <template>
-  <header class="bg-white text-black shadow-md">
-    <div class="container mx-auto flex justify-between items-center p-5">
-      <div class="text-3xl font-semibold flex items-center gap-1">
-        <Icon class="text-violet-600" size="2.5rem" name="arcticons:vinyl" />
+  <header class="shadow-md">
+    <div class="container mx-auto p-5">
+      <div class="flex items-center">
+        <CommonAppIcon />
+        <div class="w-full mx-8 flex justify-center items-center">
+          <CommonAppSearchBar v-model="searchKey" />
+        </div>
         <div>
-          <p class="text-sm font-medium -mb-2">THE</p>
-          <h1>VINY<span class="text-violet-600">LATA</span></h1>
+          <ul class="flex gap-2">
+            <li>
+              <CommonAppColorMode />
+            </li>
+          </ul>
         </div>
       </div>
-      <div>
-        <app-input placeholder="test" v-model="searchKey"></app-input>
-      </div>
-      <ul class="flex gap-8 font-normal">
-        <li><AppLink to="/" label="home">Home</AppLink></li>
-        <li><AppLink to="/about" label="about">About</AppLink></li>
-        <li><AppLink to="/" label="genres"></AppLink></li>
-      </ul>
+      <nav class="mt-4 flex justify-center items-center">
+        <ul class="flex gap-8 justify-end">
+          <li><CommonAppLink to="/">Home</CommonAppLink></li>
+          <li><CommonAppLink to="/about">About</CommonAppLink></li>
+          <li><CommonAppLink to="/">Genres</CommonAppLink></li>
+        </ul>
+      </nav>
     </div>
   </header>
 </template>

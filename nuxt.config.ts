@@ -9,7 +9,9 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@nuxt/eslint',
     '@nuxtjs/supabase',
-    '@nuxt/ui',
+    '@nuxt/fonts',
+    'shadcn-nuxt',
+    '@nuxtjs/color-mode',
   ],
   supabase: {
     redirect: false,
@@ -22,5 +24,19 @@ export default defineNuxtConfig({
     },
     config: {},
     viewer: true,
+  },
+  shadcn: {
+    /**
+     * Prefix for all the imported component
+     */
+    prefix: '',
+    /**
+     * Directory that the component lives in.
+     * @default "./components/ui"
+     */
+    componentDir: './components/ui',
+  },
+  colorMode: {
+    classSuffix: '',
   },
 })
