@@ -1,10 +1,13 @@
 <script lang="ts" setup>
+import { Button } from '@/components/ui/button'
+import { Icon } from '@iconify/vue'
+import {}
 const searchKey = ref('')
 </script>
 
 <template>
   <header class="shadow-md">
-    <div class="container mx-auto p-5">
+    <div class="container mx-auto py-5 px-10">
       <div class="flex items-center">
         <CommonAppIcon />
         <div class="w-full mx-8 flex justify-center items-center">
@@ -14,6 +17,15 @@ const searchKey = ref('')
           <ul class="flex gap-2">
             <li>
               <CommonAppColorMode />
+            </li>
+            <li>
+              <Button class="border-none rounded-full p-3" variant="outline">
+                <Icon
+                  icon="tabler:shopping-bag"
+                  class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all"
+                />
+                <span class="sr-only">Cart</span>
+              </Button>
             </li>
           </ul>
         </div>
