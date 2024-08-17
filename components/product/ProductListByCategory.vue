@@ -48,7 +48,7 @@ async function fetchCategoryName() {
 async function fetchProductsByCategoryId() {
   const { data, error } = await supabase
     .from(PRODUCTS_CATEGORIES)
-    .select('*,products(*)')
+    .select('*,products(*,vendors(name))')
     .eq('categoryId', props.categoryId)
     .limit(10)
   if (error) {
