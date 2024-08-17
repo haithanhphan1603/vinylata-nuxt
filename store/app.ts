@@ -7,10 +7,13 @@ export const useAppStore = defineStore('app', () => {
   const categories = ref<Category[]>([])
 
   const fetchProducts = async () => {
-    const { data, error } = await supabase.from(PRODUCTS).select('*')
+    const { data, error } = await supabase
+      .from(PRODUCTS)
+      .select('*, vendors(name)')
     if (error) {
       console.error('Error fetching products', error)
     } else {
+      console.log('Products fetched', data)
       products.value = data
     }
   }

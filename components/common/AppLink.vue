@@ -6,9 +6,11 @@ defineProps<Props>()
 </script>
 
 <template>
-  <nuxt-link :to class="hover:text-violet-600 font-normal text-base">
-    <slot />
-  </nuxt-link>
+  <div class="hover:text-violet-600 font-normal text-base cursor-pointer">
+    <nuxt-link :to>
+      <slot />
+    </nuxt-link>
+  </div>
 </template>
 
 <style scoped>

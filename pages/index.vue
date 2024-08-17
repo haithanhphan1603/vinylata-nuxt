@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useAppStore } from '../store/appStore'
+import { useAppStore } from '../store/app'
 
 const appStore = useAppStore()
 
@@ -9,5 +9,6 @@ appStore.fetchProducts()
 <template>
   <section class="container">
     <SectionHeroSection />
+    <SectionNewProductSection class="mt-24" />
   </section>
 </template>

@@ -6,5 +6,13 @@ declare interface Product {
   primaryImage: string
   categoryId: number
   vendorId: number
+  currency: string
   imageUrls?: string[]
+  productType?: ProductType
+  vendors?: Vendor
+}
+
+declare enum ProductType {
+  LP = 'LP',
+  TwoLP = '2LP',
 }
