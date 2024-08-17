@@ -19,6 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
   <Primitive
     :as="as"
     :as-child="asChild"
+    class="hover:bg-slate-900 hover:text-white transition-colors duration-200 ease-in-out"
     :class="cn(buttonVariants({ variant, size }), props.class)"
   >
     <slot />

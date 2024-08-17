@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+
   modules: [
     '@pinia/nuxt',
     '@nuxtjs/i18n',
@@ -12,10 +13,13 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     'shadcn-nuxt',
     '@nuxtjs/color-mode',
+    'nuxt-swiper',
   ],
+
   supabase: {
     redirect: false,
   },
+
   tailwindcss: {
     cssPath: ['~/assets/css/tailwind.css', { injectPosition: 'first' }],
     configPath: './tailwind.config.js',
@@ -25,6 +29,7 @@ export default defineNuxtConfig({
     config: {},
     viewer: true,
   },
+
   shadcn: {
     /**
      * Prefix for all the imported component
@@ -36,8 +41,11 @@ export default defineNuxtConfig({
      */
     componentDir: './components/ui',
   },
+
   colorMode: {
     classSuffix: '',
   },
+
   css: ['~/assets/css/tailwind.css', '~/assets/scss/main.scss'],
+  compatibilityDate: '2024-08-17',
 })
