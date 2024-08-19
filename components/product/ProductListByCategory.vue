@@ -3,21 +3,43 @@
     <h1 class="text-violet-600 font-extrabold text-center text-4xl">
       {{ upperCaseCategoryName }}
     </h1>
-    <Swiper
-      :slides-per-view="5"
-      :modules="SwiperNavigation"
-      :space-between="30"
-      :navigation="true"
-      class="mt-8"
-    >
-      <SwiperSlide v-for="product in products" :key="product.id">
-        <ProductCard :product="product" />
-      </SwiperSlide>
-    </Swiper>
+    <div class="swiper-container relative">
+      <Swiper
+        ref="swiperRef"
+        :slides-per-view="5"
+        :modules="[SwiperNavigation]"
+        :space-between="30"
+        class="mt-8"
+        :loop="true"
+        @swiper="onSwiper"
+      >
+        <SwiperSlide v-for="product in products" :key="product.id">
+          <ProductCard :product="product" />
+        </SwiperSlide>
+      </Swiper>
+      <Button
+        class="absolute top-1/3 -left-5 z-50 p-2 rounded-full bg-violet-400"
+        type="button"
+        @click="swiperPrevSlide"
+      >
+        <MoveLeftIcon height="1.5rem" width="1.5rem" />
+      </Button>
+      <Button
+        class="absolute top-1/3 -right-5 z-50 p-2 rounded-full bg-violet-400"
+        type="button"
+        @click="swiperNextSlide"
+      >
+        <MoveRightIcon height="1.5rem" width="1.5rem" />
+      </Button>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import type { Swiper as SwiperType } from 'swiper'
+import Button from '../ui/button/Button.vue'
+import { MoveRightIcon, MoveLeftIcon } from 'lucide-vue-next'
+
 interface Props {
   categoryId: number
 }
@@ -28,10 +50,23 @@ const products = ref<Product[]>([])
 const PRODUCTS_CATEGORIES = 'products_categories'
 
 const supabase = useSupabaseClient()
+const swiperInstance = ref()
 
 const upperCaseCategoryName = computed(() => {
   return categoryName.value.toUpperCase()
 })
+
+function onSwiper(swiper: SwiperType) {
+  swiperInstance.value = swiper
+}
+
+function swiperPrevSlide() {
+  swiperInstance.value.slidePrev()
+}
+
+function swiperNextSlide() {
+  swiperInstance.value.slideNext()
+}
 
 async function fetchCategoryName() {
   const { data, error } = await supabase
@@ -48,7 +83,7 @@ async function fetchCategoryName() {
 async function fetchProductsByCategoryId() {
   const { data, error } = await supabase
     .from(PRODUCTS_CATEGORIES)
-    .select('*,products(*,vendors(name))')
+    .select('*,products(*,vendors(name),categories(name))')
     .eq('categoryId', props.categoryId)
     .limit(10)
   if (error) {
