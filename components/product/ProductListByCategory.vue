@@ -3,13 +3,12 @@
     <h1 class="text-violet-600 font-extrabold text-center text-4xl">
       {{ upperCaseCategoryName }}
     </h1>
-    <div class="swiper-container relative">
+    <div class="swiper-container relative mt-8">
       <Swiper
         ref="swiperRef"
         :slides-per-view="5"
         :modules="[SwiperNavigation]"
         :space-between="30"
-        class="mt-8"
         :loop="true"
         @swiper="onSwiper"
       >
@@ -31,6 +30,12 @@
       >
         <MoveRightIcon height="1.5rem" width="1.5rem" />
       </Button>
+    </div>
+    <div class="text-center mt-4">
+      <Button
+        class="font-extrabold text-md py-6 px-28 bg-violet-950 hover:bg-violet-600"
+        >SEE ALL</Button
+      >
     </div>
   </div>
 </template>
@@ -83,7 +88,7 @@ async function fetchCategoryName() {
 async function fetchProductsByCategoryId() {
   const { data, error } = await supabase
     .from(PRODUCTS_CATEGORIES)
-    .select('*,products(*,vendors(name),categories(name))')
+    .select('*,products(*,vendors(name))')
     .eq('categoryId', props.categoryId)
     .limit(10)
   if (error) {

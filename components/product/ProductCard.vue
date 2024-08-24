@@ -5,7 +5,7 @@
       class="rounded-lg border border-slate-200 bg-white text-slate-950 shadow-sm dark:border-slate-800 dark:bg-slate-950 dark:text-slate-50 relative"
     >
       <AspectRatio :ratio="1" class="flex justify-center items-center">
-        <img :src="product.primaryImage" :alt="product.name" />
+        <img loading="lazy" :src="product.primaryImage" :alt="product.name" />
       </AspectRatio>
       <Button v-if="isHovered" class="w-full font-extrabold absolute bottom-0">
         ADD TO CART
@@ -19,13 +19,13 @@
     </div>
     <CommonAppLink
       to="/"
-      class="text-lg font-semibold text-slate-800 mt-4 dark:text-slate-50"
+      class="text-lg font-semibold text-slate-800 mt-4 dark:text-slate-50 line-clamp-2"
     >
       {{ product.name }}
     </CommonAppLink>
-    <p class="text-slate-950 dark:text-slate-50">
+    <CommonAppLink to="/" class="text-slate-950 dark:text-slate-50">
       {{ product.vendors?.name }}
-    </p>
+    </CommonAppLink>
     <span class="text-sm font-semibold text-slate-400 dark:text-slate-400">
       {{ product.productType }}
     </span>

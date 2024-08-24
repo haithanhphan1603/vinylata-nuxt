@@ -40,9 +40,9 @@ const searchKey = ref('')
       </div>
       <nav class="mt-4 flex justify-center items-center">
         <ul class="flex gap-8 justify-end">
-          <li><CommonAppLink to="/">Home</CommonAppLink></li>
-          <li><CommonAppLink to="/about">About</CommonAppLink></li>
-          <li><CommonAppLink to="/">Genres</CommonAppLink></li>
+          <li><CommonAppLink to="/">HOME</CommonAppLink></li>
+          <li><CommonAppLink to="/about">ABOUT</CommonAppLink></li>
+          <li><CommonAppLink to="/">GENRES</CommonAppLink></li>
         </ul>
       </nav>
     </div>
