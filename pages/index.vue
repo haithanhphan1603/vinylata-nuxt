@@ -5,6 +5,6 @@
     <SectionHeroSection />
     <SectionProductSection class="mt-24" />
     <SectionCategorySection class="mt-24" />
-    <LetterSubscriptionSection class="mt-24" />
+    <SectionLetterSubscriptionSection class="mt-12" />
   </section>
 </template>
