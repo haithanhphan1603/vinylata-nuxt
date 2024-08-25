@@ -21,4 +21,11 @@
   opacity: 50%;
   width: 8rem;
 }
+
+.dark {
+  .hero-section__brand {
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(36deg)
+      brightness(103%) contrast(103%);
+  }
+}
 </style>

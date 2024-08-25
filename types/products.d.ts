@@ -10,6 +10,8 @@ declare interface Product {
   imageUrls?: string[]
   productType?: ProductType
   vendors?: Vendor
+  slug: string
+  mainCategory: Category
 }
 
 declare enum ProductType {

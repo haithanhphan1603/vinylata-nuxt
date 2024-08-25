@@ -4,21 +4,27 @@
       ref="myHoverableElement"
       class="rounded-lg border border-slate-200 bg-white text-slate-950 shadow-sm dark:border-slate-800 dark:bg-slate-950 dark:text-slate-50 relative"
     >
-      <AspectRatio :ratio="1" class="flex justify-center items-center">
-        <img loading="lazy" :src="product.primaryImage" :alt="product.name" />
-      </AspectRatio>
-      <Button v-if="isHovered" class="w-full font-extrabold absolute bottom-0">
-        ADD TO CART
-      </Button>
-      <button
-        class="absolute top-0 right-0 p-2 bg-transparent hover:bg-none"
-        @click="addToWishList"
-      >
-        <HeartIcon height="1.75rem" :color="heartIconColor" width="1.75rem" />
-      </button>
+      <NuxtLink :to="`/products/${product.slug}`">
+        <AspectRatio :ratio="1" class="flex justify-center items-center">
+          <img loading="lazy" :src="product.primaryImage" :alt="product.name" />
+        </AspectRatio>
+        <Button
+          v-if="isHovered"
+          class="w-full font-extrabold absolute bottom-0"
+          @click.stop=""
+        >
+          ADD TO CART
+        </Button>
+        <button
+          class="absolute top-0 right-0 p-2 bg-transparent hover:bg-none"
+          @click="addToWishList"
+        >
+          <HeartIcon height="1.75rem" :color="heartIconColor" width="1.75rem" />
+        </button>
+      </NuxtLink>
     </div>
     <CommonAppLink
-      to="product"
+      :to="`/products/${product.slug}`"
       class="text-lg font-semibold text-slate-800 mt-4 dark:text-slate-50 line-clamp-2"
     >
       {{ product.name }}

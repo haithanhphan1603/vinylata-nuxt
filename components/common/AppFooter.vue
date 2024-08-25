@@ -3,62 +3,71 @@ import {
   FacebookIcon,
   TwitterIcon,
   InstagramIcon,
-  YoutubeIcon,
   MailIcon,
+  GithubIcon,
 } from 'lucide-vue-next'
+import AppFooterItem from './AppFooterItem.vue'
 
 const footerLinks = ref([
-  { to: '/', label: 'HOME' },
-  { to: '/about', label: 'ABOUT' },
-  { to: '/new-releases', label: 'NEW RELEASES' },
-  { to: '/pre-orders', label: 'PRE-ORDERS' },
-  { to: '/genres', label: 'GENRES' },
+  { to: '/new-releases', label: 'New Release' },
+  { to: '/pre-orders', label: 'Pre-orders' },
+  { to: '/genres', label: 'Genres' },
+  { to: '/pop', label: 'Pop' },
+])
+
+const supportLinks = ref([
+  { to: '/about', label: 'About' },
   { to: '/faq', label: 'FAQ' },
+  { to: '/contact', label: 'Contact' },
+  { to: '/shipping', label: 'Shipping' },
+  { to: '/returns', label: 'Returns' },
+])
+
+const accountLinks = ref([
+  { to: '/login', label: 'Login' },
+  { to: '/register', label: 'Register' },
+  { to: '/shipping', label: 'My Cart' },
+  { to: '/returns', label: 'My Wishlist' },
+  { to: '/orders', label: 'My Order' },
+])
+
+const socialLinks = ref([
+  { href: '#', icon: FacebookIcon, label: 'Facebook' },
+  { href: '#', icon: TwitterIcon, label: 'Twitter' },
+  { href: '#', icon: InstagramIcon, label: 'Instagram' },
+  { href: '#', icon: MailIcon, label: 'Mail' },
+  {
+    href: 'https://github.com/haithanhphan1603',
+    icon: GithubIcon,
+    label: 'Github',
+    target: '_blank',
+  },
 ])
 </script>
 
 <template>
-  <footer class="bg-background py-10">
+  <footer class="bg-background pt-10 pb-8">
     <div class="container mx-auto px-10">
-      <div class="grid grid-cols-3">
-        <div>
-          <CommonAppIcon class="" />
-          <p class="font-extralight">therecord@vinylata.com</p>
+      <div class="grid grid-cols-4 gap-4">
+        <div class="flex flex-col gap-2">
+          <CommonAppIcon />
+          <a class="font-extralight">therecord@vinylata.com</a>
           <div class="flex gap-2 mt-2">
-            <button class="border-none rounded-full" variant="outline">
-              <FacebookIcon height="1.5rem" width="1.5rem" />
-              <span class="sr-only">Facebook</span>
-            </button>
-            <button class="border-none rounded-full" variant="outline">
-              <TwitterIcon height="1.5rem" width="1.5rem" />
-              <span class="sr-only">Twitter</span>
-            </button>
-            <button class="border-none rounded-full" variant="outline">
-              <InstagramIcon height="1.5rem" width="1.5rem" />
-              <span class="sr-only">Instagram</span>
-            </button>
-            <button class="border-none rounded-full" variant="outline">
-              <MailIcon height="1.5rem" width="1.5rem" />
-              <span class="sr-only">Mail</span>
-            </button>
-            <button class="border-none rounded-full" variant="outline">
-              <YoutubeIcon height="1.5rem" width="1.5rem" />
-              <span class="sr-only">Youtube</span>
-            </button>
+            <a
+              v-for="link in socialLinks"
+              :key="link.label"
+              :href="link.href"
+              :target="link.target || '_self'"
+              class="border-none rounded-full"
+            >
+              <component :is="link.icon" height="1.5rem" width="1.5rem" />
+              <span class="sr-only">{{ link.label }}</span>
+            </a>
           </div>
         </div>
-        <div>
-          <ul class="flex flex-col">
-            <li v-for="link in footerLinks" :key="link.label">
-              <CommonAppLink class="text-sm font-light" :to="link.to">{{
-                link.label
-              }}</CommonAppLink>
-            </li>
-          </ul>
-        </div>
-        <div>
-          <p class="text-bold text-vil">Let's vinyl</p>
-        </div>
+        <AppFooterItem label="Let's Vinyl" :footer-links="footerLinks" />
+        <AppFooterItem label="Support" :footer-links="supportLinks" />
+        <AppFooterItem label="Account" :footer-links="accountLinks" />
       </div>
     </div>
   </footer>
