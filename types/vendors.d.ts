@@ -3,4 +3,5 @@ declare interface Vendor {
   name: string
   background: string
   image: string
+  slug: string
 }

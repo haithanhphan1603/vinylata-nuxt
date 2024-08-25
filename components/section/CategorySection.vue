@@ -22,7 +22,7 @@
           >
             {{ category.name }}
           </div>
-          <div class="absolute inset-0 bg-violet-900 opacity-30" />
+          <div class="absolute inset-0 bg-violet-900 opacity-40" />
         </AspectRatio>
       </div>
     </div>
@@ -40,7 +40,11 @@ const { toast } = useToast()
 const categories = ref<Category[]>([])
 
 async function fetchSampleCategories() {
-  const { data, error } = await supabase.from('categories').select('*').limit(4)
+  const { data, error } = await supabase
+    .from('categories')
+    .select('*')
+    .order('id', { ascending: false })
+    .limit(6)
   if (error) {
     console.log(error)
     toast({
@@ -54,8 +58,3 @@ async function fetchSampleCategories() {
 
 fetchSampleCategories()
 </script>
-
-<style scoped lang="scss">
-.category-section__img {
-}
-</style>

@@ -18,12 +18,12 @@
       </button>
     </div>
     <CommonAppLink
-      to="/"
+      to="product"
       class="text-lg font-semibold text-slate-800 mt-4 dark:text-slate-50 line-clamp-2"
     >
       {{ product.name }}
     </CommonAppLink>
-    <CommonAppLink to="/" class="text-slate-950 dark:text-slate-50">
+    <CommonAppLink to="vendors" class="text-slate-950 dark:text-slate-50">
       {{ product.vendors?.name }}
     </CommonAppLink>
     <span class="text-sm font-semibold text-slate-400 dark:text-slate-400">
