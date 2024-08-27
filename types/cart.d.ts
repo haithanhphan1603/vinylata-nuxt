@@ -1,7 +1,7 @@
 interface CartItem {
   productId: number
   quantity: number
-  cartId: string
+  cartId?: string
   price: number
 }
 

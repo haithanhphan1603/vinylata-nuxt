@@ -11,7 +11,7 @@
         <Button
           v-if="isHovered"
           class="w-full font-extrabold absolute bottom-0"
-          @click.stop=""
+          @click.stop.prevent="addToCart"
         >
           ADD TO CART
         </Button>
@@ -46,11 +46,14 @@ import Card from '../ui/card/Card.vue'
 import AspectRatio from '../ui/aspect-ratio/AspectRatio.vue'
 import { useElementHover } from '@vueuse/core'
 import { HeartIcon } from 'lucide-vue-next'
+import { useCartStore } from '~/store/cart'
 interface Props {
   product: Product
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
+
+const cartStore = useCartStore()
 
 const myHoverableElement = ref<HTMLElement | null>(null)
 const isHovered = useElementHover(myHoverableElement)
@@ -64,6 +67,15 @@ const heartIconColor = computed(() => {
 
 function addToWishList() {
   isOnWishlist.value = !isOnWishlist.value
+}
+
+function addToCart() {
+  const cartItem: CartItem = {
+    price: props.product.unitPrice,
+    productId: props.product.id,
+    quantity: 1,
+  }
+  cartStore.addToCart(cartItem)
 }
 </script>
 

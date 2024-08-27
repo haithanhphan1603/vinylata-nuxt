@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@nuxtjs/color-mode',
     'nuxt-swiper',
+    '@pinia-plugin-persistedstate/nuxt',
   ],
 
   supabase: {
