@@ -13,7 +13,6 @@ import { useCartStore } from '~/store/cart'
 const cartStore = useCartStore()
 
 const { cartItems } = storeToRefs(cartStore)
-console.log(cartItems)
 </script>
 
 <style scoped></style>
