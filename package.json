@@ -22,6 +22,7 @@
     "radix-vue": "^1.9.1",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
+    "uuid": "^10.0.0",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2"
   },
@@ -35,6 +36,7 @@
     "@nuxtjs/i18n": "^8.3.1",
     "@nuxtjs/supabase": "^1.2.2",
     "@nuxtjs/tailwindcss": "^6.12.1",
+    "@types/uuid": "^10.0.0",
     "@vueuse/nuxt": "^10.9.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
