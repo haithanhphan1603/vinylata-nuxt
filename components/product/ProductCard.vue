@@ -10,10 +10,11 @@
         </AspectRatio>
         <Button
           v-if="isHovered"
-          class="w-full font-extrabold absolute bottom-0"
+          class="w-full font-extrabold absolute bottom-0 uppercase"
           @click.stop.prevent="addToCart"
         >
-          ADD TO CART
+          <div>Add to cart</div>
+          <Loader v-if="isLoading" />
         </Button>
         <button
           class="absolute top-0 right-0 p-2 bg-transparent hover:bg-none"
@@ -45,8 +46,9 @@
 import Card from '../ui/card/Card.vue'
 import AspectRatio from '../ui/aspect-ratio/AspectRatio.vue'
 import { useElementHover } from '@vueuse/core'
-import { HeartIcon } from 'lucide-vue-next'
+import { HeartIcon, Loader } from 'lucide-vue-next'
 import { useCartStore } from '~/store/cart'
+
 interface Props {
   product: Product
 }
@@ -58,6 +60,7 @@ const cartStore = useCartStore()
 const myHoverableElement = ref<HTMLElement | null>(null)
 const isHovered = useElementHover(myHoverableElement)
 const isOnWishlist = ref(false)
+const isLoading = ref(false)
 const colorMode = useColorMode()
 
 const heartIconColor = computed(() => {
@@ -70,12 +73,18 @@ function addToWishList() {
 }
 
 function addToCart() {
+  isLoading.value = true
   const cartItem: CartItem = {
     price: props.product.unitPrice,
+    productImgUrl: props.product.primaryImage,
     productId: props.product.id,
+    productName: props.product.name,
+    productSlug: props.product.slug,
+    productVendorName: props.product.vendors?.name,
     quantity: 1,
   }
   cartStore.addToCart(cartItem)
+  isLoading.value = false
 }
 </script>
 

@@ -6,6 +6,12 @@ export const useCartStore = defineStore(
     const cartItems = ref<CartItem[]>([])
     const cart = ref<Cart | null>(null)
 
+    const totalQuantity = computed(() => {
+      return cartItems.value.reduce((acc, item) => {
+        return acc + item.quantity
+      }, 0)
+    })
+
     function createOrUpdateCart() {
       if (!cart.value) {
         cart.value = {
@@ -71,6 +77,7 @@ export const useCartStore = defineStore(
       increaseItemQuantity,
       clearCart,
       decreaseItemQuantity,
+      totalQuantity,
     }
   },
   {

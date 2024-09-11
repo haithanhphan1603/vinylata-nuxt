@@ -3,6 +3,10 @@ interface CartItem {
   quantity: number
   cartId?: string
   price: number
+  productImgUrl: string
+  productName: string
+  productSlug: string
+  productVendorName?: string
 }
 
 interface Cart {

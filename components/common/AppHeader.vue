@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { Button } from '@/components/ui/button'
 import { ShoppingBagIcon, CircleUserRoundIcon } from 'lucide-vue-next'
+import { useCartStore } from '~/store/cart'
 const searchKey = ref('')
 const links = ref([
   { to: '/', label: 'HOME' },
@@ -10,6 +11,8 @@ const links = ref([
   { to: '/genres', label: 'GENRES' },
   { to: '/faq', label: 'FAQ' },
 ])
+
+const { totalQuantity } = storeToRefs(useCartStore())
 </script>
 
 <template>
@@ -31,12 +34,17 @@ const links = ref([
                 <span class="sr-only">Profile</span>
               </Button>
             </li>
-            <li>
+            <li class="relative">
               <Button
                 class="border-none rounded-full p-3 hover:text-violet-600"
                 variant="outline"
               >
                 <ShoppingBagIcon height="1.2rem" width="1.2rem" />
+                <div
+                  class="absolute top-0 text-[0.6rem] right-1 rounded-[50%] bg-violet-600 h-4 w-4 flex items-center justify-center text-white"
+                >
+                  {{ totalQuantity }}
+                </div>
                 <span class="sr-only">Cart</span>
               </Button>
             </li>
