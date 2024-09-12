@@ -6,6 +6,8 @@ export const useCartStore = defineStore(
     const cartItems = ref<CartItem[]>([])
     const cart = ref<Cart | null>(null)
 
+    const isMiniCartVisible = ref(false)
+
     const totalQuantity = computed(() => {
       return cartItems.value.reduce((acc, item) => {
         return acc + item.quantity
@@ -42,8 +44,10 @@ export const useCartStore = defineStore(
       createOrUpdateCart()
     }
 
-    function removeCartItem(productId: number) {
-      cartItems.value = cartItems.value.filter((i) => i.productId !== productId)
+    function removeCartItem(index: number) {
+      const currentCartItems = [...cartItems.value]
+      currentCartItems.splice(index, 1)
+      cartItems.value = [...currentCartItems]
       createOrUpdateCart()
     }
 
@@ -78,6 +82,7 @@ export const useCartStore = defineStore(
       clearCart,
       decreaseItemQuantity,
       totalQuantity,
+      isMiniCartVisible,
     }
   },
   {

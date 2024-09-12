@@ -12,7 +12,14 @@ const links = ref([
   { to: '/faq', label: 'FAQ' },
 ])
 
-const { totalQuantity } = storeToRefs(useCartStore())
+const { totalQuantity, isMiniCartVisible } = storeToRefs(useCartStore())
+const showMiniCart = () => {
+  isMiniCartVisible.value = true
+}
+
+const hideMiniCart = () => {
+  isMiniCartVisible.value = false
+}
 </script>
 
 <template>
@@ -34,7 +41,11 @@ const { totalQuantity } = storeToRefs(useCartStore())
                 <span class="sr-only">Profile</span>
               </Button>
             </li>
-            <li class="relative">
+            <li
+              class="relative"
+              @mouseenter.stop="showMiniCart"
+              @mouseleave.stop="hideMiniCart"
+            >
               <Button
                 class="border-none rounded-full p-3 hover:text-violet-600"
                 variant="outline"
@@ -47,6 +58,10 @@ const { totalQuantity } = storeToRefs(useCartStore())
                 </div>
                 <span class="sr-only">Cart</span>
               </Button>
+              <CartMiniCart
+                v-show="isMiniCartVisible"
+                class="absolute right-0"
+              />
             </li>
             <li>
               <CommonAppColorMode />
