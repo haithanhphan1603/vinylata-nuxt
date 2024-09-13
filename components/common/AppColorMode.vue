@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { Button } from '@/components/ui/button'
 
 const colorMode = useColorMode()
 
@@ -14,9 +13,8 @@ const toggleTheme = () => {
 </script>
 
 <template>
-  <Button
-    class="border-none rounded-full p-3 hover:text-violet-600"
-    variant="outline"
+  <div
+    class="border-none rounded-full px-1 py-3 hover:text-violet-600"
     @click="toggleTheme"
   >
     <Icon
@@ -28,5 +26,5 @@ const toggleTheme = () => {
       class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
     />
     <span class="sr-only">Toggle theme</span>
-  </Button>
+  </div>
 </template>

@@ -33,35 +33,26 @@ const hideMiniCart = () => {
         <div>
           <ul class="flex gap-1">
             <li>
-              <Button
-                class="border-none rounded-full p-3 hover:text-violet-600"
-                variant="outline"
-              >
+              <div class="py-3 px-1 hover:text-violet-600 cursor-pointer">
                 <CircleUserRoundIcon height="1.2rem" width="1.2rem" />
                 <span class="sr-only">Profile</span>
-              </Button>
+              </div>
             </li>
             <li
               class="relative"
               @mouseenter.stop="showMiniCart"
               @mouseleave.stop="hideMiniCart"
             >
-              <Button
-                class="border-none rounded-full p-3 hover:text-violet-600"
-                variant="outline"
-              >
+              <div class="py-3 px-1 hover:text-violet-600 cursor-pointer">
                 <ShoppingBagIcon height="1.2rem" width="1.2rem" />
                 <div
-                  class="absolute top-0 text-[0.6rem] right-1 rounded-[50%] bg-violet-600 h-4 w-4 flex items-center justify-center text-white"
+                  class="absolute top-1 text-[0.6rem] -right-1 rounded-[50%] bg-violet-600 h-4 w-4 flex items-center justify-center text-white"
                 >
                   {{ totalQuantity }}
                 </div>
                 <span class="sr-only">Cart</span>
-              </Button>
-              <CartMiniCart
-                v-show="isMiniCartVisible"
-                class="absolute right-0"
-              />
+              </div>
+              <CartMiniCart class="absolute right-0 top-[100%]" />
             </li>
             <li>
               <CommonAppColorMode />

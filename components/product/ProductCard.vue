@@ -18,7 +18,7 @@
         </Button>
         <button
           class="absolute top-0 right-0 p-2 bg-transparent hover:bg-none"
-          @click="addToWishList"
+          @click.stop="addToWishList"
         >
           <HeartIcon height="1.75rem" :color="heartIconColor" width="1.75rem" />
         </button>
