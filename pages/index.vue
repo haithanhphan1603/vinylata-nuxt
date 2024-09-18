@@ -6,5 +6,8 @@
     <SectionProductSection class="mt-24" />
     <SectionCategorySection class="mt-24" />
     <SectionLetterSubscriptionSection class="my-12" />
+    <SectionAboutSection />
   </section>
 </template>
+
+<style scoped></style>
