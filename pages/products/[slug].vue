@@ -3,6 +3,9 @@
     <ClientOnly>
       <Toaster />
     </ClientOnly>
+    <Head>
+      <Title>{{ product?.name }}</Title>
+    </Head>
     <div class="grid grid-cols-[4fr,3fr] gap-10">
       <AspectRatio
         :ratio="16 / 9"
@@ -72,6 +75,10 @@ const { height } = useElementSize(description)
 
 const toggleDescription = () => {
   showFullDescription.value = !showFullDescription.value
+}
+
+const capitalizeFirstLetter = (string: string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
 watch(height, () => {
