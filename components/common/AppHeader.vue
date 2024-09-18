@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { Button } from '@/components/ui/button'
 import { ShoppingBagIcon, CircleUserRoundIcon } from 'lucide-vue-next'
 import { useCartStore } from '~/store/cart'
 const searchKey = ref('')

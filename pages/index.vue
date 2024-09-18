@@ -1,4 +1,9 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+useHead({
+  title: 'Vinylata',
+  meta: [{ name: 'description', content: 'My amazing site.' }],
+})
+</script>
 
 <template>
   <section class="container">
