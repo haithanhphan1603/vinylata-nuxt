@@ -8,9 +8,15 @@
     }"
   >
     <div
-      class="dark:bg-gray-950 bg-white relative p-4 border border-slate-200 dark:border-slate-600"
+      class="dark:bg-gray-950 bg-white relative p-4 border border-slate-200 dark:border-slate-700"
     >
-      <component :is="icon" size="2rem" :stroke-width="1" class="mb-2" />
+      <component
+        :is="icon"
+        size="2rem"
+        :stroke-width="1"
+        class="mb-2"
+        color="#7c3aed"
+      />
       <p class="text-gray-900 dark:text-white text-base font-bold truncate">
         {{ title }}
       </p>

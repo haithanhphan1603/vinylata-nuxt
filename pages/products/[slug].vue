@@ -4,9 +4,12 @@
       <Toaster />
     </ClientOnly>
     <div class="grid grid-cols-[4fr,3fr] gap-10">
-      <AspectRatio :ratio="16 / 9" class="flex justify-center">
+      <AspectRatio
+        :ratio="16 / 9"
+        class="flex justify-center h-full items-center"
+      >
         <img
-          class="object-cover max-w-520px h-full"
+          class="object-cover max-h-[520px] flex justify-center items-center"
           :src="product?.primaryImage"
           :alt="product?.name"
         />
@@ -21,9 +24,23 @@
         <Button class="my-8 uppercase font-extrabold px-32 py-2"
           >add to cart</Button
         >
-        <div class="mb-8">
-          {{ product?.description }}
+        <div class="relative mb-8">
+          <div
+            ref="description"
+            class="overflow-hidden relative"
+            :class="{ 'max-h-24': !showFullDescription }"
+          >
+            {{ product?.description }}
+          </div>
+          <button
+            v-if="isOverflowing"
+            class="text-violet-600 text-right"
+            @click="toggleDescription"
+          >
+            {{ showFullDescription ? 'Read Less' : 'Read More' }}
+          </button>
         </div>
+
         <div class="flex gap-1">
           <strong>Format: </strong>
           <span>{{ product?.productType }} Vinyl</span>
@@ -46,6 +63,22 @@ const { toast } = useToast()
 const supabase = useSupabaseClient()
 const route = useRoute()
 const product = ref<Product>()
+
+const showFullDescription = ref(false)
+const description = ref<HTMLElement | null>(null)
+const isOverflowing = ref(false)
+
+const { height } = useElementSize(description)
+
+const toggleDescription = () => {
+  showFullDescription.value = !showFullDescription.value
+}
+
+watch(height, () => {
+  if (description?.value?.scrollHeight > height.value) {
+    isOverflowing.value = true
+  }
+})
 
 async function fetchProduct(slug: string) {
   const { data, error } = await supabase
