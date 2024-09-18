@@ -52,7 +52,10 @@ const hideMiniCart = () => {
                 </div>
                 <span class="sr-only">Cart</span>
               </div>
-              <CartMiniCart class="absolute right-0 top-[100%]" />
+              <CartMiniCart
+                v-show="isMiniCartVisible"
+                class="absolute right-0 top-[100%]"
+              />
             </li>
             <li>
               <CommonAppColorMode />
