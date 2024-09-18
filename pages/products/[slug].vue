@@ -77,10 +77,6 @@ const toggleDescription = () => {
   showFullDescription.value = !showFullDescription.value
 }
 
-const capitalizeFirstLetter = (string: string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1)
-}
-
 watch(height, () => {
   if (description?.value?.scrollHeight > height.value) {
     isOverflowing.value = true
