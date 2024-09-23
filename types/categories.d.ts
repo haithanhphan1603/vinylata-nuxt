@@ -3,4 +3,5 @@ declare interface Category {
   name: string
   description: string
   backgroundImage: string
+  slug: string
 }

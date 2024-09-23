@@ -4,10 +4,11 @@
       <Toaster />
     </ClientOnly>
     <div class="grid grid-cols-2 gap-4 mt-8">
-      <div
+      <NuxtLink
         v-for="category in categories"
         :key="category.id"
         class="relative overflow-hidden cursor-pointer"
+        :to="`/collections/${category.slug}`"
       >
         <AspectRatio
           :ratio="16 / 9"
@@ -24,7 +25,7 @@
           </div>
           <div class="absolute inset-0 bg-violet-900 opacity-40" />
         </AspectRatio>
-      </div>
+      </NuxtLink>
     </div>
   </section>
 </template>
