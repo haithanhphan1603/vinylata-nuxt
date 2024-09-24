@@ -10,7 +10,7 @@
           <ProductCard :product="product" />
         </div>
         <template v-if="isLoading">
-          <ProductCardSkeleton v-for="i in 12" :key="i" />
+          <ProductCardSkeleton v-for="i in 4" :key="i" />
         </template>
       </div>
     </div>
