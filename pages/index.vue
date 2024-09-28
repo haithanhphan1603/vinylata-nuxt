@@ -1,9 +1,9 @@
 <template>
-  <section class="container">
+  <div class="flex flex-col gap-12">
     <SectionHeroSection />
-    <SectionProductSection class="mt-24" />
-    <SectionCategorySection class="mt-24" />
-    <SectionLetterSubscriptionSection class="my-12" />
+    <SectionProductSection />
+    <SectionCategorySection />
+    <SectionLetterSubscriptionSection />
     <SectionAboutSection />
-  </section>
+  </div>
 </template>

@@ -8,9 +8,11 @@
         {{ category?.name }}
       </h1>
       <div class="grid gap-6 grid-cols-4 py-10">
-        <div v-for="product in validProducts" :key="product.id">
-          <ProductCard :product="product" />
-        </div>
+        <template v-if="validProducts.length > 0">
+          <div v-for="product in validProducts" :key="product.id">
+            <ProductCard :product="product" />
+          </div>
+        </template>
 
         <template v-if="isLoading">
           <ProductCardSkeleton v-for="i in 4" :key="i" />
