@@ -1,4 +1,9 @@
+import type { Tables } from '~/types/database.types'
+
 const PRODUCTS = 'products'
+
+type Product = Tables<'products'>
+type Category = Tables<'categories'>
 
 export const useAppStore = defineStore('app', () => {
   const supabase = useSupabaseClient()

@@ -22,13 +22,16 @@
 
 <script setup lang="ts">
 import ProductCard from '~/components/product/ProductCard.vue'
+import type { Tables } from '~/types/database.types'
+import { SortBy } from '~/types/search.types'
+
 const supabase = useSupabaseClient()
 const slug = useRoute().params.slug
 
 const collectionRef = ref<HTMLElement | null>(null)
 
-const category = ref<Category>()
-const products = ref<Product[]>([])
+const category = ref<Tables<'categories'>>()
+const products = ref<Tables<'products'>[]>([])
 const totalProducts = ref<number>(0)
 
 const isLoading = ref(false)
@@ -36,7 +39,7 @@ const isLoading = ref(false)
 const searchInfo = reactive({
   start: 0,
   end: 11,
-  sortBy: '',
+  sortBy: SortBy.MANUAL,
   productType: [],
 })
 
@@ -66,13 +69,47 @@ async function fetchProducts() {
   isLoading.value = true
   let query = supabase
     .from(PRODUCTS_CATEGORIES)
-    .select('products!inner(*,vendors(name))')
+    .select('products(*,vendors(name))')
     .eq('categoryId', category.value?.id)
     .range(searchInfo.start, searchInfo.end)
 
   if (searchInfo.productType.length > 0) {
     query = query.in('products.productType', searchInfo.productType)
   }
+
+  // Add sorting logic
+  switch (searchInfo.sortBy) {
+    case SortBy.PRICE_ASC:
+      query = query.order('products(unitPrice)', {
+        ascending: true,
+      })
+      break
+    case SortBy.PRICE_DESC:
+      query = query.order('products(unitPrice)', {
+        ascending: false,
+      })
+      break
+    case SortBy.NAME_ASC:
+      query = query.order('products(name)', {
+        ascending: true,
+      })
+      break
+    case SortBy.NAME_DESC:
+      query = query.order('products(name)', {
+        ascending: false,
+      })
+      break
+    case SortBy.CREATED_AT_DESC:
+      query = query.order('products(createdAt)', {
+        ascending: false,
+      })
+      break
+    // For SortBy.MANUAL, we don't add any specific ordering
+    default:
+      // No specific ordering for manual or unsupported sorting options
+      break
+  }
+
   const { data, error } = await query
 
   if (error) {
@@ -137,7 +174,7 @@ watch(
 )
 
 watch(
-  () => searchInfo.productType,
+  [() => searchInfo.productType, () => searchInfo.sortBy],
   async () => {
     products.value = [] // Reset products array
     searchInfo.start = 0

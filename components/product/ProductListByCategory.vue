@@ -44,6 +44,11 @@
 import type { Swiper as SwiperType } from 'swiper'
 import Button from '../ui/button/Button.vue'
 import { MoveRightIcon, MoveLeftIcon } from 'lucide-vue-next'
+import type { Tables } from '~/types/database.types'
+
+type Product = Tables<'products'> & {
+  vendors: { name: string }
+}
 
 interface Props {
   categoryId: number

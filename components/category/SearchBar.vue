@@ -1,60 +1,3 @@
-<script setup lang="ts">
-import { Checkbox } from '@/components/ui/checkbox'
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion'
-
-enum ProductType {
-  LP = 'LP',
-  _2LP = '2LP',
-  CD = 'CD',
-  CDDVD = 'CD+DVD',
-}
-
-interface SearchInfo {
-  productType: string[]
-  sortBy: string
-  start: number
-  end: number
-}
-
-const searchInfo = defineModel({
-  type: Object as () => SearchInfo,
-  required: true,
-})
-
-const productTypeOptions = [
-  {
-    id: ProductType.LP,
-    label: ProductType.LP,
-  },
-  {
-    id: ProductType.CD,
-    label: ProductType.CD,
-  },
-  {
-    id: ProductType.CDDVD,
-    label: ProductType.CDDVD,
-  },
-  {
-    id: ProductType._2LP,
-    label: ProductType._2LP,
-  },
-]
-
-const accordionItems = [
-  {
-    value: 'item-1',
-    title: 'Format',
-  },
-]
-
-const defaultAccordionItems = accordionItems.map((item) => item.value)
-</script>
-
 <template>
   <Accordion
     type="multiple"
@@ -62,12 +5,11 @@ const defaultAccordionItems = accordionItems.map((item) => item.value)
     :default-value="defaultAccordionItems"
   >
     <AccordionItem
-      v-for="item in accordionItems"
-      :key="item.value"
-      :value="item.value"
+      :key="accordionItems[0].value"
+      :value="accordionItems[0].value"
     >
       <AccordionTrigger class="text-lg font-extrabold">{{
-        item.title
+        accordionItems[0].title
       }}</AccordionTrigger>
       <AccordionContent>
         <div class="flex gap-2 flex-col">
@@ -98,5 +40,98 @@ const defaultAccordionItems = accordionItems.map((item) => item.value)
         </div>
       </AccordionContent>
     </AccordionItem>
+    <AccordionItem
+      :key="accordionItems[1].value"
+      :value="accordionItems[1].value"
+    >
+      <AccordionTrigger class="text-lg font-extrabold">{{
+        accordionItems[1].title
+      }}</AccordionTrigger>
+      <AccordionContent>
+        <div class="flex gap-2 flex-col">
+          <RadioGroup v-model="searchInfo.sortBy">
+            <div v-for="option in sortByOptions" :key="option.value">
+              <RadioGroupItem :id="option.value" :value="option.value" />
+              <label
+                :for="option.value"
+                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 pl-2"
+              >
+                {{ option.label }}
+              </label>
+            </div>
+          </RadioGroup>
+        </div>
+      </AccordionContent>
+    </AccordionItem>
   </Accordion>
 </template>
+
+<script setup lang="ts">
+import { Checkbox } from '@/components/ui/checkbox'
+import type { Enums } from '~/types/database.types'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
+import RadioGroup from '../ui/radio-group/RadioGroup.vue'
+import RadioGroupItem from '../ui/radio-group/RadioGroupItem.vue'
+import { SortBy } from '~/types/search.types'
+
+interface SearchInfo {
+  productType: Enums<'productType'>[]
+  sortBy: string
+  start: number
+  end: number
+}
+
+const searchInfo = defineModel({
+  type: Object as () => SearchInfo,
+  required: true,
+})
+
+const productTypeOptions: {
+  id: Enums<'productType'>
+  label: Enums<'productType'>
+}[] = [
+  {
+    id: 'LP',
+    label: 'LP',
+  },
+  {
+    id: 'CD',
+    label: 'CD',
+  },
+  {
+    id: '2LP',
+    label: '2LP',
+  },
+  {
+    id: 'CD+DVD',
+    label: 'CD+DVD',
+  },
+]
+
+const sortByOptions = [
+  { value: SortBy.MANUAL, label: 'Manual' },
+  { value: SortBy.PRICE_ASC, label: 'Price: Low to High' },
+  { value: SortBy.PRICE_DESC, label: 'Price: High to Low' },
+  { value: SortBy.NAME_ASC, label: 'Name: A to Z' },
+  { value: SortBy.NAME_DESC, label: 'Name: Z to A' },
+  { value: SortBy.CREATED_AT_DESC, label: 'Newest Arrivals' },
+]
+
+const accordionItems = [
+  {
+    value: 'item-1',
+    title: 'Format',
+  },
+  {
+    value: 'item-2',
+    title: 'Sort By',
+  },
+]
+
+const defaultAccordionItems = accordionItems.map((item) => item.value)
+</script>

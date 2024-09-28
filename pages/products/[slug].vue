@@ -61,11 +61,17 @@
 import Toaster from '~/components/ui/toast/Toaster.vue'
 import AspectRatio from '~/components/ui/aspect-ratio/AspectRatio.vue'
 import { useToast } from '~/components/ui/toast'
+import type { Tables } from '~/types/database.types'
+
+type ProductsWithRelations = Tables<'products'> & {
+  vendors: { name: string }
+  mainCategory: { name: string }
+}
 
 const { toast } = useToast()
 const supabase = useSupabaseClient()
 const route = useRoute()
-const product = ref<Product>()
+const product = ref<ProductsWithRelations>()
 
 const showFullDescription = ref(false)
 const description = ref<HTMLElement | null>(null)
@@ -78,7 +84,7 @@ const toggleDescription = () => {
 }
 
 watch(height, () => {
-  if (description?.value?.scrollHeight > height.value) {
+  if (description.value && description?.value?.scrollHeight > height.value) {
     isOverflowing.value = true
   }
 })

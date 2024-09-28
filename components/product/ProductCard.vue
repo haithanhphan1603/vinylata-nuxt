@@ -48,6 +48,13 @@ import AspectRatio from '../ui/aspect-ratio/AspectRatio.vue'
 import { useElementHover } from '@vueuse/core'
 import { HeartIcon, Loader } from 'lucide-vue-next'
 import { useCartStore } from '~/store/cart'
+import type { Tables } from '~/types/database.types'
+
+type Product = Tables<'products'> & {
+  vendors: { name: string }
+}
+
+type CartItem = Tables<'cartItem'>
 
 interface Props {
   product: Product

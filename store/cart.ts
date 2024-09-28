@@ -1,4 +1,8 @@
 import { v4 as uuidv4 } from 'uuid'
+import type { Tables } from '~/types/database.types'
+
+type CartItem = Tables<'cartItem'>
+type Cart = Tables<'cart'>
 
 export const useCartStore = defineStore(
   'cart',
@@ -18,11 +22,14 @@ export const useCartStore = defineStore(
       if (!cart.value) {
         cart.value = {
           id: uuidv4(),
-          totalPrice: 0,
+          totalprice: 0,
           currency: 'USD',
+          createdat: new Date().toISOString(),
+          updatedat: new Date().toISOString(),
+          createdby: 'anonymous',
         }
       }
-      cart.value.totalPrice = cartItems.value.reduce((acc, item) => {
+      cart.value.totalprice = cartItems.value.reduce((acc, item) => {
         return acc + item.price * item.quantity
       }, 0)
     }
