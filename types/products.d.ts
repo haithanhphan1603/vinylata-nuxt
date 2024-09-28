@@ -13,8 +13,3 @@ declare interface Product {
   slug: string
   mainCategory: Category
 }
-
-declare enum ProductType {
-  LP = 'LP',
-  TwoLP = '2LP',
-}

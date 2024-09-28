@@ -13,7 +13,6 @@ export const useAppStore = defineStore('app', () => {
     if (error) {
       console.error('Error fetching products', error)
     } else {
-      console.log('Products fetched', data)
       products.value = data
     }
   }
