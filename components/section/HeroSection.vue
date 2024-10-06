@@ -42,7 +42,7 @@
   }
 }
 
-:global(.dark) {
+.dark {
   .hero-section__brand {
     filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(36deg)
       brightness(103%) contrast(103%);
