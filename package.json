@@ -8,7 +8,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "lint": "eslint . --ext .ts,.vue"
+    "lint": "eslint . --ext .ts,.vue",
+    "update-types": "npx supabase gen types --lang=typescript --project-id \"agkajtjnmvpxvycwpvrz\" > database.types.ts"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.5.1",

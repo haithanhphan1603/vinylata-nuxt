@@ -60,7 +60,8 @@ const toggleMobileMenu = () => {
               <div class="p-2 hover:text-violet-600 cursor-pointer">
                 <ShoppingBagIcon class="sm:h-5 sm:w-5" />
                 <div
-                  class="absolute top-1 right-1 rounded-full bg-violet-600 h-4 w-4 flex items-center justify-center text-white text-xs"
+                  v-if="totalQuantity > 0"
+                  class="absolute top-1 right-0 rounded-full bg-violet-600 h-4 w-4 flex items-center justify-center text-white text-[0.6rem]"
                 >
                   {{ totalQuantity }}
                 </div>

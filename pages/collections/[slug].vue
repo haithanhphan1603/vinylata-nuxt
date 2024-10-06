@@ -182,14 +182,13 @@ watch(
     searchInfo.start = 0
     searchInfo.end = 11
     await fetchTotalProducts()
-    await fetchProducts()
   },
   {
     deep: true,
   },
 )
 
-fetchData()
+await fetchData()
 
 onMounted(() => {
   window.addEventListener('scroll', debouncedHandleScroll)

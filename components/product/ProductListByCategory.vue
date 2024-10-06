@@ -33,8 +33,9 @@
     </div>
     <div class="text-center mt-4">
       <Button
-        class="font-extrabold text-md py-6 px-28 bg-violet-950 hover:bg-violet-600"
-        >SEE ALL</Button
+        class="font-extrabold text-md py-6 px-28 bg-violet-950 hover:bg-violet-600 uppercase"
+        @click="navigateToCategory"
+        >see all</Button
       >
     </div>
   </div>
@@ -55,12 +56,15 @@ interface Props {
 }
 const props = defineProps<Props>()
 const categoryName = ref<string>('')
+const categorySlug = ref<string>('')
 const products = ref<Product[]>([])
 
 const PRODUCTS_CATEGORIES = 'products_categories'
 
 const supabase = useSupabaseClient()
 const swiperInstance = ref()
+
+const router = useRouter()
 
 const upperCaseCategoryName = computed(() => {
   return categoryName.value.toUpperCase()
@@ -81,12 +85,13 @@ function swiperNextSlide() {
 async function fetchCategoryName() {
   const { data, error } = await supabase
     .from('categories')
-    .select('name')
+    .select('name,slug')
     .eq('id', props.categoryId)
   if (error) {
     console.error(error)
   } else {
     categoryName.value = data[0].name
+    categorySlug.value = data[0].slug
   }
 }
 
@@ -101,6 +106,10 @@ async function fetchProductsByCategoryId() {
   } else {
     products.value = data.map((item) => item.products)
   }
+}
+
+function navigateToCategory() {
+  router.push(`/collections/${categorySlug.value}`)
 }
 
 fetchProductsByCategoryId()

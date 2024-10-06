@@ -90,6 +90,7 @@ export const useCartStore = defineStore(
       decreaseItemQuantity,
       totalQuantity,
       isMiniCartVisible,
+      cart,
     }
   },
   {

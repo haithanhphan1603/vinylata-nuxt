@@ -3,15 +3,15 @@
     <div
       class="flex justify-center items-center h-[100px] w-[100px] min-w-[100px]"
     >
-      <img :src="item.productImgUrl" class="object-contain" />
+      <img :src="product?.primaryImage" class="object-contain" />
     </div>
     <div class="flex flex-col gap-0.5">
       <CommonAppLink class="!font-bold" to="/test">
-        {{ item.productVendorName }}
+        {{ product?.vendors.name }}
       </CommonAppLink>
       <div>
-        <h4>{{ item.productName }}</h4>
-        <h5 class="font-bold text-sm">${{ item.price }}</h5>
+        <h4>{{ product?.name }}</h4>
+        <h5 class="font-bold text-sm">${{ itemPrice }}</h5>
       </div>
 
       <div class="flex mt-1">
@@ -49,15 +49,41 @@
 import { Card } from '../ui/card'
 import Button from '../ui/button/Button.vue'
 import { CircleX, Plus, Minus } from 'lucide-vue-next'
+import type { Tables } from '~/types/database.types'
 
 interface Props {
-  item: CartItem
+  item: Tables<'cartItem'>
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 const emit = defineEmits<{
   (e: 'removeItem' | 'decreaseQuantity' | 'increaseQuantity'): void
 }>()
+
+interface ProductWithVendor extends Tables<'products'> {
+  vendors: { name: string }
+}
+
+const product = ref<ProductWithVendor | null>(null)
+
+const itemPrice = computed(() => {
+  return (props.item.quantity * (product.value?.unitPrice ?? 0)).toFixed(2)
+})
+
+const supabase = useSupabaseClient()
+
+async function fetchProduct() {
+  const { data, error } = await supabase
+    .from('products')
+    .select('name, unitPrice, primaryImage, vendors(name)')
+    .eq('id', props.item.productId)
+  if (error) {
+    console.error(error)
+  }
+  product.value = data?.[0]
+}
+
+await fetchProduct()
 </script>
 
 <style scoped></style>
