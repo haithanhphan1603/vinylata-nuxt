@@ -18,9 +18,23 @@
         </Button>
         <button
           class="absolute top-0 right-0 p-2 bg-transparent hover:bg-none"
-          @click.stop="addToWishList"
+          @click.stop.prevent="addToWishList"
         >
-          <HeartIcon height="1.75rem" :color="heartIconColor" width="1.75rem" />
+          <HeartIcon
+            v-if="!isOnWishlist"
+            height="1.75rem"
+            :color="heartIconColor"
+            stroke-width="1.5"
+            width="1.75rem"
+          />
+          <HeartIcon
+            v-else
+            height="1.75rem"
+            color="#4f46e5"
+            fill="#4f46e5"
+            stroke-width="1.5"
+            width="1.75rem"
+          />
         </button>
       </NuxtLink>
     </div>
@@ -72,8 +86,7 @@ const isLoading = ref(false)
 const colorMode = useColorMode()
 
 const heartIconColor = computed(() => {
-  const secondaryColor = colorMode.value === 'light' ? '#2d2d2d' : '#FFFFFF'
-  return isOnWishlist.value ? '#7c3aed' : secondaryColor
+  return colorMode.value === 'light' ? '#2d2d2d' : '#FFFFFF'
 })
 
 function addToWishList() {
