@@ -43,7 +43,11 @@
         <span>${{ totalPrice }}</span>
       </div>
       <Separator class="my-2" />
-      <div class="flex gap-2" />
+      <div class="flex gap-2">
+        <Button class="w-full uppercase font-bold" @click="navigateToCart">
+          Proceed to Checkout
+        </Button>
+      </div>
     </CardContent>
   </Card>
 </template>
@@ -53,14 +57,20 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useCartStore } from '~/store/cart'
 import { Earth, ShieldCheck } from 'lucide-vue-next'
 import { Separator } from '../ui/separator'
+import { Button } from '../ui/button'
 
 const cartStore = useCartStore()
 const { decreaseItemQuantity, increaseItemQuantity, removeCartItem } = cartStore
 const { totalQuantity, cartItems, cart } = storeToRefs(cartStore)
+const router = useRouter()
 
 const totalPrice = computed(() => {
   return cart.value?.totalprice?.toFixed(2)
 })
+
+const navigateToCart = () => {
+  router.push('/cart')
+}
 </script>
 
 <style scoped></style>
