@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center justify-between py-4 border-b">
+  <div class="flex items-center justify-between py-2 border-t relative">
     <div class="flex w-1/2 gap-8 items-center">
       <img
         :src="product?.primaryImage"
@@ -11,30 +11,44 @@
         <p class="text-sm text-gray-600">{{ product?.vendors.name }}</p>
       </div>
     </div>
-    <div class="flex w-1/2 justify-between text-center">
-      <p class="font-bold w-1/3">{{ item.price }}</p>
-      <div class="flex items-center justify-center w-1/3">
-        <button
-          class="px-2 py-1 bg-gray-200 text-black"
+    <div class="flex w-1/2 justify-between items-center text-center">
+      <p class="font-bold w-1/3">{{ product?.currency }} {{ item.price }}</p>
+      <div class="flex w-1/3 justify-center">
+        <Button
+          class="text-xs bg-violet-500 text-white"
+          size="sm"
+          :disabled="item.quantity === 1"
           @click="emit('decreaseQuantity')"
         >
-          -
-        </button>
-        <span class="px-4 py-1 border-t border-b">{{ item.quantity }}</span>
-        <button
-          class="px-2 py-1 bg-green-500 text-white"
+          <Minus class="h-4 w-4" />
+        </Button>
+        <div class="border border-input w-14 flex items-center justify-center">
+          {{ item.quantity }}
+        </div>
+        <Button
+          class="text-xs bg-violet-500 text-white"
+          size="sm"
           @click="emit('increaseQuantity')"
         >
-          +
-        </button>
+          <Plus class="h-4 w-4" />
+        </Button>
       </div>
-      <p class="font-bold w-1/3">{{ itemPrice }}</p>
+      <p class="font-bold w-1/3">{{ product?.currency }} {{ itemPrice }}</p>
+      <CircleX
+        class="cart-item__circle-x absolute right-0 top-[15%] cursor-pointer"
+        fill="#cbd5e1"
+        color="#1e293b"
+        stroke-width="1"
+        @click="emit('removeItem')"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import Button from '../ui/button/Button.vue'
 import type { Tables } from '~/types/database.types'
+import { Minus, Plus, CircleX } from 'lucide-vue-next'
 
 interface Props {
   item: Tables<'cartItem'>
@@ -60,7 +74,7 @@ const supabase = useSupabaseClient()
 async function fetchProduct() {
   const { data, error } = await supabase
     .from('products')
-    .select('name, unitPrice, primaryImage, vendors(name)')
+    .select('name, unitPrice, primaryImage, vendors(name),currency')
     .eq('id', props.item.productId)
   if (error) {
     console.error(error)
@@ -70,3 +84,8 @@ async function fetchProduct() {
 
 await fetchProduct()
 </script>
+<style lang="scss" scoped>
+.cart-item__circle-x:hover {
+  fill: #94a3b8; /* Change to desired hover color */
+}
+</style>

@@ -23,7 +23,7 @@ export const useCartStore = defineStore(
         cart.value = {
           id: uuidv4(),
           totalprice: 0,
-          currency: 'USD',
+          currency: '$',
           createdat: new Date().toISOString(),
           updatedat: new Date().toISOString(),
           createdby: 'anonymous',
