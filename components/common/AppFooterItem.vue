@@ -1,6 +1,5 @@
 <template>
   <div>
-    <p class="font-extrabold text-violet-600">{{ label }}</p>
     <ul class="flex flex-col gap-1 mt-1">
       <li v-for="link in footerLinks" :key="link.label">
         <CommonAppLink class="text-sm font-light" :to="link.to">{{
@@ -13,7 +12,6 @@
 
 <script lang="ts" setup>
 interface Props {
-  label: string
   footerLinks: { label: string; to: string }[]
 }
 

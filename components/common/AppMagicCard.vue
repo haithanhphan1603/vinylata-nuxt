@@ -8,7 +8,7 @@
     }"
   >
     <div
-      class="dark:bg-gray-950 bg-white relative p-4 border border-slate-200 dark:border-slate-700"
+      class="dark:bg-gray-950 bg-white relative p-4 border border-slate-200 dark:border-slate-700 h-full"
     >
       <component
         :is="icon"

@@ -7,7 +7,7 @@
         class="rounded-md object-cover w-full h-48 sm:h-64 md:h-80 lg:h-[30rem]"
       />
     </div>
-    <div class="py-8 px-4 sm:px-6 lg:px-8">
+    <div class="py-8">
       <div
         class="flex flex-wrap gap-x-8 sm:gap-x-12 md:gap-x-16 lg:gap-x-20 items-center justify-center w-full"
       >

@@ -1,5 +1,5 @@
 <template>
-  <Card class="h-96 border-none">
+  <Card class="h-full border-none">
     <div
       ref="myHoverableElement"
       class="rounded-lg border border-slate-200 bg-white text-slate-950 shadow-sm dark:border-slate-800 dark:bg-slate-950 dark:text-slate-50 relative"
@@ -9,57 +9,63 @@
           <img loading="lazy" :src="product.primaryImage" :alt="product.name" />
         </AspectRatio>
         <Button
-          v-if="isHovered"
-          class="w-full font-extrabold absolute bottom-0 uppercase"
+          v-if="isHovered || isMobile"
+          class="w-full font-extrabold absolute bottom-0 uppercase text-xs sm:text-sm"
           @click.stop.prevent="addToCart"
         >
           <div>Add to cart</div>
-          <Loader v-if="isLoading" />
+          <Loader v-if="isLoading" class="ml-2 h-4 w-4" />
         </Button>
         <button
-          class="absolute top-0 right-0 p-2 bg-transparent hover:bg-none"
+          class="absolute top-2 right-2 p-1 sm:p-2 bg-transparent hover:bg-none"
           @click.stop.prevent="addToWishList"
         >
           <HeartIcon
             v-if="!isOnWishlist"
-            height="1.75rem"
+            :height="isMobile ? '1.25rem' : '1.75rem'"
+            :width="isMobile ? '1.25rem' : '1.75rem'"
             :color="heartIconColor"
             stroke-width="1.5"
-            width="1.75rem"
           />
           <HeartIcon
             v-else
-            height="1.75rem"
+            :height="isMobile ? '1.25rem' : '1.75rem'"
+            :width="isMobile ? '1.25rem' : '1.75rem'"
             color="#4f46e5"
             fill="#4f46e5"
             stroke-width="1.5"
-            width="1.75rem"
           />
         </button>
       </NuxtLink>
     </div>
     <CommonAppLink
       :to="`/products/${product.slug}`"
-      class="text-lg font-semibold text-slate-800 mt-4 dark:text-slate-50 line-clamp-2"
+      class="text-sm sm:text-base lg:text-lg font-semibold text-slate-800 mt-2 sm:mt-3 lg:mt-4 dark:text-slate-50 line-clamp-2"
     >
       {{ product.name }}
     </CommonAppLink>
-    <CommonAppLink to="vendors" class="text-slate-950 dark:text-slate-50">
+    <CommonAppLink
+      to="vendors"
+      class="text-xs sm:text-sm text-slate-950 dark:text-slate-50"
+    >
       {{ product.vendors?.name }}
     </CommonAppLink>
-    <span class="text-sm font-semibold text-slate-400 dark:text-slate-400">
+    <span class="text-xs font-semibold text-slate-400 dark:text-slate-400">
       {{ product.productType }}
     </span>
-    <p class="text-md font-semibold text-slate-600 dark:text-slate-300">
+    <p
+      class="text-sm sm:text-base font-semibold text-slate-600 dark:text-slate-300 mt-1"
+    >
       {{ product.currency }}{{ product.unitPrice }}
     </p>
   </Card>
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import Card from '../ui/card/Card.vue'
 import AspectRatio from '../ui/aspect-ratio/AspectRatio.vue'
-import { useElementHover } from '@vueuse/core'
+import { useElementHover, useWindowSize } from '@vueuse/core'
 import { HeartIcon, Loader } from 'lucide-vue-next'
 import { useCartStore } from '~/store/cart'
 import type { Tables } from '~/types/database.types'
@@ -84,6 +90,9 @@ const isHovered = useElementHover(myHoverableElement)
 const isOnWishlist = ref(false)
 const isLoading = ref(false)
 const colorMode = useColorMode()
+
+const { width } = useWindowSize()
+const isMobile = computed(() => width.value < 640)
 
 const heartIconColor = computed(() => {
   return colorMode.value === 'light' ? '#2d2d2d' : '#FFFFFF'

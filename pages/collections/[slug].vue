@@ -52,6 +52,17 @@ const validProducts = computed(() =>
 )
 
 async function fetchCategory() {
+  if (slug === 'all') {
+    category.value = {
+      name: 'All',
+      id: 0,
+      slug: 'all',
+      backgroundImage: '',
+      description: '',
+    }
+    return
+  }
+
   const { data, error } = await supabase
     .from('categories')
     .select('*')
@@ -72,8 +83,12 @@ async function fetchProducts() {
   let query = supabase
     .from(PRODUCTS_CATEGORIES)
     .select('products(*,vendors(name))')
-    .eq('categoryId', category.value?.id ?? 0)
-    .range(searchInfo.start, searchInfo.end)
+
+  if (slug !== 'all') {
+    query = query.eq('categoryId', category.value?.id ?? 0)
+  }
+
+  query = query.range(searchInfo.start, searchInfo.end)
 
   if (searchInfo.productType.length > 0) {
     query = query.in('products.productType', searchInfo.productType)
@@ -124,18 +139,18 @@ async function fetchProducts() {
 }
 
 async function fetchTotalProducts() {
-  let query = supabase
-    .from('products_categories')
-    .select(
-      `
+  let query = supabase.from('products_categories').select(
+    `
       products!inner (
         id,
         productType
       )
     `,
-      { count: 'exact' },
-    )
-    .eq('categoryId', category.value?.id ?? 0)
+    { count: 'exact' },
+  )
+  if (slug !== 'all') {
+    query = query.eq('categoryId', category.value?.id ?? 0)
+  }
 
   if (searchInfo.productType.length > 0) {
     query = query.in('products.productType', searchInfo.productType)

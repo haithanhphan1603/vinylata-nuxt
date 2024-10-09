@@ -1,14 +1,16 @@
 <template>
   <div v-if="products && categoryName">
-    <h1 class="text-violet-600 font-extrabold text-center text-4xl">
+    <h1
+      class="text-violet-600 font-extrabold text-center text-2xl sm:text-3xl lg:text-4xl"
+    >
       {{ upperCaseCategoryName }}
     </h1>
-    <div class="swiper-container relative mt-8">
+    <div class="swiper-container relative mt-4 sm:mt-6 lg:mt-8">
       <Swiper
         ref="swiperRef"
-        :slides-per-view="5"
+        :slides-per-view="slidesPerView"
         :modules="[SwiperNavigation]"
-        :space-between="30"
+        :space-between="20"
         :loop="true"
         @swiper="onSwiper"
       >
@@ -17,31 +19,33 @@
         </SwiperSlide>
       </Swiper>
       <Button
-        class="absolute top-1/3 -left-5 z-50 p-2 rounded-full bg-violet-400"
+        class="absolute top-1/3 -left-2 sm:-left-3 lg:-left-5 z-50 p-2 rounded-full bg-violet-400"
         type="button"
         @click="swiperPrevSlide"
       >
-        <MoveLeftIcon height="1.5rem" width="1.5rem" />
+        <MoveLeftIcon class="h-6" />
       </Button>
       <Button
-        class="absolute top-1/3 -right-5 z-50 p-2 rounded-full bg-violet-400"
+        class="absolute top-1/3 -right-2 sm:-right-3 lg:-right-5 z-50 p-2 rounded-full bg-violet-400"
         type="button"
         @click="swiperNextSlide"
       >
-        <MoveRightIcon height="1.5rem" width="1.5rem" />
+        <MoveRightIcon class="h-6" />
       </Button>
     </div>
-    <div class="text-center mt-4">
+    <div class="text-center mt-4 sm:mt-6">
       <Button
-        class="font-extrabold text-md py-6 px-28 bg-violet-950 hover:bg-violet-600 uppercase"
+        class="font-extrabold text-sm sm:text-md py-4 sm:py-5 lg:py-6 px-16 sm:px-20 lg:px-28 bg-violet-950 hover:bg-violet-600 uppercase"
         @click="navigateToCategory"
-        >see all</Button
       >
+        see all
+      </Button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import type { Swiper as SwiperType } from 'swiper'
 import Button from '../ui/button/Button.vue'
 import { MoveRightIcon, MoveLeftIcon } from 'lucide-vue-next'
@@ -59,6 +63,8 @@ const categoryName = ref<string>('')
 const categorySlug = ref<string>('')
 const products = ref<Product[]>([])
 
+const { width } = useWindowSize()
+
 const PRODUCTS_CATEGORIES = 'products_categories'
 
 const supabase = useSupabaseClient()
@@ -68,6 +74,16 @@ const router = useRouter()
 
 const upperCaseCategoryName = computed(() => {
   return categoryName.value.toUpperCase()
+})
+
+const slidesPerView = computed(() => {
+  if (width.value < 640) {
+    return 2
+  } else if (width.value < 1024) {
+    return 3
+  } else {
+    return 5
+  }
 })
 
 function onSwiper(swiper: SwiperType) {
@@ -114,6 +130,16 @@ function navigateToCategory() {
 
 fetchProductsByCategoryId()
 fetchCategoryName()
+
+// Add event listener for window resize to update slidesPerView
+onMounted(() => {
+  window.addEventListener('resize', () => {
+    if (swiperInstance.value) {
+      swiperInstance.value.params.slidesPerView = slidesPerView.value
+      swiperInstance.value.update()
+    }
+  })
+})
 </script>
 
 <style scoped></style>
