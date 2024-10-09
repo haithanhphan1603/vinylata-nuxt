@@ -72,7 +72,7 @@ async function fetchProducts() {
   let query = supabase
     .from(PRODUCTS_CATEGORIES)
     .select('products(*,vendors(name))')
-    .eq('categoryId', category.value?.id)
+    .eq('categoryId', category.value?.id ?? 0)
     .range(searchInfo.start, searchInfo.end)
 
   if (searchInfo.productType.length > 0) {
@@ -135,7 +135,7 @@ async function fetchTotalProducts() {
     `,
       { count: 'exact' },
     )
-    .eq('categoryId', category.value?.id)
+    .eq('categoryId', category.value?.id ?? 0)
 
   if (searchInfo.productType.length > 0) {
     query = query.in('products.productType', searchInfo.productType)
@@ -146,7 +146,7 @@ async function fetchTotalProducts() {
     console.error('Error fetching total products:', error)
   } else {
     console.log('Total products:', count)
-    totalProducts.value = count
+    totalProducts.value = count ?? 0
   }
 }
 
@@ -162,18 +162,12 @@ function handleScroll(_e: Event) {
     if (element.getBoundingClientRect().bottom < window.innerHeight) {
       searchInfo.start = searchInfo.end + 1
       searchInfo.end += 10
+      fetchProducts()
     }
   }
 }
 
 const debouncedHandleScroll = useDebounce(handleScroll, 300)
-
-watch(
-  () => searchInfo.end,
-  async () => {
-    await fetchProducts()
-  },
-)
 
 watch(
   [() => searchInfo.productType, () => searchInfo.sortBy],
@@ -182,6 +176,7 @@ watch(
     searchInfo.start = 0
     searchInfo.end = 11
     await fetchTotalProducts()
+    await fetchProducts()
   },
   {
     deep: true,
