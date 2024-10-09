@@ -1,33 +1,36 @@
 <template>
-  <div class="my-12">
+  <div class="my-6 md:my-12 px-4 md:px-0">
     <ClientOnly>
       <Toaster />
     </ClientOnly>
     <Head>
       <Title>{{ product?.name }}</Title>
     </Head>
-    <div class="grid grid-cols-[4fr,3fr] gap-10">
+    <div class="grid grid-cols-1 md:grid-cols-[4fr,3fr] gap-6 md:gap-10">
       <AspectRatio
         :ratio="16 / 9"
         class="flex justify-center h-full items-center"
       >
         <img
-          class="object-cover max-h-[520px] flex justify-center items-center"
+          class="object-cover w-full max-h-[520px]"
           :src="product?.primaryImage"
           :alt="product?.name"
-        >
+        />
       </AspectRatio>
       <div>
-        <h2 class="text-xl">{{ product?.vendors?.name }}</h2>
-        <h1 class="text-4xl font-bold">{{ product?.name }}</h1>
-        <h4 class="text-xl font-bold text-slate-600 dark:text-slate-300">
+        <h2 class="text-lg md:text-xl">{{ product?.vendors?.name }}</h2>
+        <h1 class="text-2xl md:text-4xl font-bold mt-2">{{ product?.name }}</h1>
+        <h4
+          class="text-lg md:text-xl font-bold text-slate-600 dark:text-slate-300 mt-2"
+        >
           {{ product?.currency }} {{ product?.unitPrice }}
         </h4>
 
-        <Button class="my-8 uppercase font-extrabold px-32 py-2"
+        <Button
+          class="my-6 md:my-8 uppercase font-extrabold px-8 md:px-32 py-2 w-full md:w-auto"
           >add to cart</Button
         >
-        <div class="relative mb-8">
+        <div class="relative mb-6 md:mb-8">
           <div
             ref="description"
             class="overflow-hidden relative"
@@ -37,20 +40,22 @@
           </div>
           <button
             v-if="isOverflowing"
-            class="text-violet-600 text-right"
+            class="text-violet-600 text-right w-full"
             @click="toggleDescription"
           >
             {{ showFullDescription ? 'Read Less' : 'Read More' }}
           </button>
         </div>
 
-        <div class="flex gap-1">
-          <strong>Format: </strong>
-          <span>{{ product?.productType }} Vinyl</span>
-        </div>
-        <div class="flex gap-1">
-          <strong>Genres: </strong>
-          <span>{{ product?.mainCategory.name }}</span>
+        <div class="flex flex-col gap-1">
+          <div class="flex gap-1">
+            <strong>Format:</strong>
+            <span>{{ product?.productType }} Vinyl</span>
+          </div>
+          <div class="flex gap-1">
+            <strong>Genres:</strong>
+            <span>{{ product?.mainCategory.name }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -104,6 +109,7 @@ async function fetchProduct(slug: string) {
   }
   product.value = data[0]
 }
+
 fetchProduct(route.params.slug as string)
 </script>
 
