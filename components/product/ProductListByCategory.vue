@@ -35,7 +35,7 @@
     </div>
     <div class="text-center mt-4 sm:mt-6">
       <Button
-        class="font-extrabold text-sm sm:text-md py-4 sm:py-5 lg:py-6 px-16 sm:px-20 lg:px-28 bg-violet-950 hover:bg-violet-600 uppercase"
+        class="font-extrabold text-md sm:text-md py-4 sm:py-5 lg:py-6 px-16 sm:px-20 lg:px-28 bg-violet-950 hover:bg-violet-600 uppercase"
         @click="navigateToCategory"
       >
         see all

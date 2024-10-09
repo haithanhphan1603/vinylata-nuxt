@@ -9,7 +9,7 @@
           <img loading="lazy" :src="product.primaryImage" :alt="product.name" />
         </AspectRatio>
         <Button
-          v-if="isHovered || isMobile"
+          v-if="isHovered"
           class="w-full font-extrabold absolute bottom-0 uppercase text-xs sm:text-sm"
           @click.stop.prevent="addToCart"
         >
@@ -40,22 +40,20 @@
     </div>
     <CommonAppLink
       :to="`/products/${product.slug}`"
-      class="text-sm sm:text-base lg:text-lg font-semibold text-slate-800 mt-2 sm:mt-3 lg:mt-4 dark:text-slate-50 line-clamp-2"
+      class="text-base lg:text-lg font-semibold text-slate-800 mt-2 sm:mt-3 lg:mt-4 dark:text-slate-50 line-clamp-2"
     >
       {{ product.name }}
     </CommonAppLink>
     <CommonAppLink
       to="vendors"
-      class="text-xs sm:text-sm text-slate-950 dark:text-slate-50"
+      class="text-sm lg:text-base text-slate-950 dark:text-slate-50"
     >
       {{ product.vendors?.name }}
     </CommonAppLink>
-    <span class="text-xs font-semibold text-slate-400 dark:text-slate-400">
+    <span class="text-sm font-semibold text-slate-400 dark:text-slate-400">
       {{ product.productType }}
     </span>
-    <p
-      class="text-sm sm:text-base font-semibold text-slate-600 dark:text-slate-300 mt-1"
-    >
+    <p class="text-base font-semibold text-slate-600 dark:text-slate-300 mt-0">
       {{ product.currency }}{{ product.unitPrice }}
     </p>
   </Card>

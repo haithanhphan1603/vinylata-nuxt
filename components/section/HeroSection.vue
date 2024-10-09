@@ -7,9 +7,9 @@
         class="rounded-md object-cover w-full h-48 sm:h-64 md:h-80 lg:h-[30rem]"
       />
     </div>
-    <div class="py-8">
+    <div class="py-4 lg:py-8">
       <div
-        class="flex flex-wrap gap-x-8 sm:gap-x-12 md:gap-x-16 lg:gap-x-20 items-center justify-center w-full"
+        class="flex gap-x-8 sm:gap-x-12 md:gap-x-16 lg:gap-x-20 items-center justify-center w-full flex-nowrap"
       >
         <img class="hero-section__brand" src="/brand/brand1.png" alt="brand1" />
         <img class="hero-section__brand" src="/brand/brand2.png" alt="brand2" />
@@ -26,6 +26,9 @@
   filter: brightness(0);
   opacity: 50%;
   width: 4rem;
+  @media (max-width: 480px) {
+    width: 3rem;
+  }
   @media (min-width: 640px) {
     width: 5rem;
   }
