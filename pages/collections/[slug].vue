@@ -15,7 +15,7 @@
         </template>
 
         <template v-if="isLoading">
-          <ProductCardSkeleton v-for="i in 4" :key="i" />
+          <ProductCardSkeleton v-for="i in 4" :key="i" class="h-60 w-52" />
         </template>
       </div>
     </div>

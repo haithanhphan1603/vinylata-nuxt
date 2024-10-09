@@ -1,12 +1,16 @@
 <template>
-  <div v-if="products && categoryName">
+  <div>
     <h1
+      v-if="categoryName"
       class="text-violet-600 font-extrabold text-center text-2xl sm:text-3xl lg:text-4xl"
     >
       {{ upperCaseCategoryName }}
     </h1>
+    <Skeleton v-else class="h-10 w-60 m-auto" />
+
     <div class="swiper-container relative mt-4 sm:mt-6 lg:mt-8">
       <Swiper
+        v-if="products.length"
         ref="swiperRef"
         :slides-per-view="slidesPerView"
         :modules="[SwiperNavigation]"
@@ -18,6 +22,13 @@
           <ProductCard :product="product" />
         </SwiperSlide>
       </Swiper>
+      <div v-else class="flex gap-5 justify-center">
+        <ProductCardSkeleton
+          v-for="i in slidesPerView"
+          :key="i"
+          class="h-72 w-60"
+        />
+      </div>
       <Button
         class="absolute top-1/3 -left-2 sm:-left-3 lg:-left-5 z-50 p-2 rounded-full bg-violet-400"
         type="button"
@@ -50,6 +61,7 @@ import type { Swiper as SwiperType } from 'swiper'
 import Button from '../ui/button/Button.vue'
 import { MoveRightIcon, MoveLeftIcon } from 'lucide-vue-next'
 import type { Tables } from '~/types/database.types'
+import ProductCardSkeleton from './ProductCardSkeleton.vue'
 
 type Product = Tables<'products'> & {
   vendors: { name: string }

@@ -4,7 +4,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 
 <template>
   <div class="flex flex-col space-y-3">
-    <Skeleton class="h-52 w-52 rounded-xl" />
+    <Skeleton class="h-full w-full rounded-xl" />
     <div class="space-y-4">
       <Skeleton class="h-4" />
       <Skeleton class="h-4" />
