@@ -2,10 +2,10 @@
   <div class="flex items-center justify-between py-2 border-t relative">
     <div class="flex w-1/2 gap-8 items-center">
       <img
-        :src="product?.primaryImage"
+        :src="product?.primaryImage as string"
         alt="Product image"
         class="w-40 h-40 object-contain"
-      />
+      >
       <div>
         <h3 class="font-bold">{{ product?.name }}</h3>
         <p class="text-sm text-gray-600">{{ product?.vendors.name }}</p>
@@ -33,7 +33,9 @@
           <Plus class="h-4 w-4" />
         </Button>
       </div>
-      <p class="font-bold w-1/3">{{ product?.currency }} {{ itemPrice }}</p>
+      <p class="font-bold w-1/3">
+        {{ product?.currency }} {{ getCartItemPrice(item.quantity) }}
+      </p>
       <CircleX
         class="cart-item__circle-x absolute right-0 top-[15%] cursor-pointer"
         fill="#cbd5e1"
@@ -46,9 +48,10 @@
 </template>
 
 <script setup lang="ts">
+import { Minus, Plus, CircleX } from 'lucide-vue-next'
 import Button from '../ui/button/Button.vue'
 import type { Tables } from '~/types/database.types'
-import { Minus, Plus, CircleX } from 'lucide-vue-next'
+import { useCart } from '~/composables/cart'
 
 interface Props {
   item: Tables<'cartItem'>
@@ -59,30 +62,9 @@ const emit = defineEmits<{
   (e: 'removeItem' | 'decreaseQuantity' | 'increaseQuantity'): void
 }>()
 
-interface ProductWithVendor extends Tables<'products'> {
-  vendors: { name: string }
-}
+const { fetchProduct, getCartItemPrice, product } = useCart()
 
-const product = ref<ProductWithVendor | null>(null)
-
-const itemPrice = computed(() => {
-  return (props.item.quantity * (product.value?.unitPrice ?? 0)).toFixed(2)
-})
-
-const supabase = useSupabaseClient()
-
-async function fetchProduct() {
-  const { data, error } = await supabase
-    .from('products')
-    .select('name, unitPrice, primaryImage, vendors(name),currency')
-    .eq('id', props.item.productId)
-  if (error) {
-    console.error(error)
-  }
-  product.value = data?.[0]
-}
-
-await fetchProduct()
+await fetchProduct(props.item.productId as number)
 </script>
 <style lang="scss" scoped>
 .cart-item__circle-x:hover {

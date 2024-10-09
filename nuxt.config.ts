@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     'nuxt-swiper',
     '@pinia-plugin-persistedstate/nuxt',
+    'radix-vue/nuxt',
   ],
 
   supabase: {

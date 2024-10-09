@@ -15,7 +15,7 @@
           class="object-cover max-h-[520px] flex justify-center items-center"
           :src="product?.primaryImage"
           :alt="product?.name"
-        />
+        >
       </AspectRatio>
       <div>
         <h2 class="text-xl">{{ product?.vendors?.name }}</h2>
