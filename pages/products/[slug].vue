@@ -1,5 +1,5 @@
 <template>
-  <div class="my-6 md:my-12 px-4 md:px-0">
+  <div class="my-6 md:my-12">
     <ClientOnly>
       <Toaster />
     </ClientOnly>
@@ -18,8 +18,10 @@
         />
       </AspectRatio>
       <div>
-        <h2 class="text-lg md:text-xl">{{ product?.vendors?.name }}</h2>
-        <h1 class="text-2xl md:text-4xl font-bold mt-2">{{ product?.name }}</h1>
+        <AppLink class="text-lg md:text-xl">{{
+          product?.vendors?.name
+        }}</AppLink>
+        <h1 class="text-2xl md:text-4xl font-bold">{{ product?.name }}</h1>
         <h4
           class="text-lg md:text-xl font-bold text-slate-600 dark:text-slate-300 mt-2"
         >
@@ -67,6 +69,7 @@ import Toaster from '~/components/ui/toast/Toaster.vue'
 import AspectRatio from '~/components/ui/aspect-ratio/AspectRatio.vue'
 import { useToast } from '~/components/ui/toast'
 import type { Tables } from '~/types/database.types'
+import AppLink from '~/components/common/AppLink.vue'
 
 type ProductsWithRelations = Tables<'products'> & {
   vendors: { name: string }
