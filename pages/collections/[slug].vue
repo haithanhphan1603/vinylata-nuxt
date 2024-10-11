@@ -29,14 +29,6 @@ import { SortBy } from '~/types/search.types'
 
 const supabase = useSupabaseClient()
 const slug = useRoute().params.slug
-const { retriveProducts } = useApiService()
-
-interface SearchParams {
-  start: number
-  limit: number
-  sortBy: SortBy
-  productType: []
-}
 
 const collectionRef = ref<HTMLElement | null>(null)
 
@@ -46,12 +38,14 @@ const totalProducts = ref<number>(0)
 
 const isLoading = ref(false)
 
-const searchInfo = reactive<SearchParams>({
+const searchInfo = reactive({
   start: 0,
-  limit: 10,
+  end: 11,
   sortBy: SortBy.MANUAL,
   productType: [],
 })
+
+const PRODUCTS_CATEGORIES = 'products_categories'
 
 const validProducts = computed(() =>
   products.value.filter((product) => product && product.id != null),
@@ -85,18 +79,61 @@ async function fetchProducts() {
     return
   }
 
-  try {
-    isLoading.value = true
-    const categoryBySlug = slug === 'all' ? undefined : slug
-    const data = await retriveProducts(
-      searchInfo,
-      categoryBySlug as string,
-      category.value?.id,
-    )
-    console.log(data)
-  } catch (error) {
-    console.error('Error fetching products:', error)
-  } finally {
+  isLoading.value = true
+  let query = supabase
+    .from(PRODUCTS_CATEGORIES)
+    .select('products(*,vendors(name))')
+
+  if (slug !== 'all') {
+    query = query.eq('categoryId', category.value?.id ?? 0)
+  }
+
+  query = query.range(searchInfo.start, searchInfo.end)
+
+  if (searchInfo.productType.length > 0) {
+    query = query.in('products.productType', searchInfo.productType)
+  }
+
+  // Add sorting logic
+  switch (searchInfo.sortBy) {
+    case SortBy.PRICE_ASC:
+      query = query.order('products(unitPrice)', {
+        ascending: true,
+      })
+      break
+    case SortBy.PRICE_DESC:
+      query = query.order('products(unitPrice)', {
+        ascending: false,
+      })
+      break
+    case SortBy.NAME_ASC:
+      query = query.order('products(name)', {
+        ascending: true,
+      })
+      break
+    case SortBy.NAME_DESC:
+      query = query.order('products(name)', {
+        ascending: false,
+      })
+      break
+    case SortBy.CREATED_AT_DESC:
+      query = query.order('products(createdAt)', {
+        ascending: false,
+      })
+      break
+    // For SortBy.MANUAL, we don't add any specific ordering
+    default:
+      // No specific ordering for manual or unsupported sorting options
+      break
+  }
+
+  const { data, error } = await query
+
+  if (error) {
+    console.error(error)
+  } else {
+    const fetchedProducts = data.map((item: any) => item.products)
+    products.value = [...products.value, ...fetchedProducts]
     isLoading.value = false
   }
 }

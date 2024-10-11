@@ -1,4 +1,3 @@
-import { supabase } from '~/lib/supabase'
 import { SortBy } from '~/types/search.types'
 
 interface SearchParams {
@@ -19,15 +18,14 @@ export const useApiService = () => {
     categoryId: number = 0,
   ) => {
     const { start, limit, sortBy, productType } = searchInfo
-
     let query
     if (!slug) {
       query = supabase.from(PRODUCTS).select('*, vendors(name)')
     } else {
       query = supabase
         .from(PRODUCTS_CATEGORIES)
-        .select('*, vendors(name)')
-        .eq('category_id', categoryId)
+        .select('products(*,vendors(name))')
+        .query.eq('categoryId', categoryId)
     }
 
     if (productType.length > 0) {
