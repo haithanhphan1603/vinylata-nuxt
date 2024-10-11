@@ -1,7 +1,7 @@
 <template>
   <Accordion
     type="multiple"
-    class="w-full pr-8"
+    class="w-full lg:pr-8 md:pr-4"
     :default-value="defaultAccordionItems"
   >
     <AccordionItem
@@ -91,6 +91,8 @@ const searchInfo = defineModel({
   required: true,
 })
 
+const { width } = useWindowSize()
+
 const productTypeOptions: {
   id: Enums<'productType'>
   label: Enums<'productType'>
@@ -133,5 +135,10 @@ const accordionItems = [
   },
 ]
 
-const defaultAccordionItems = accordionItems.map((item) => item.value)
+const defaultAccordionItems = computed(() => {
+  if (width.value < 768) {
+    return []
+  }
+  return accordionItems.map((item) => item.value)
+})
 </script>
