@@ -1,27 +1,36 @@
 <template>
-  <div ref="collectionRef" class="flex px-16">
-    <div class="w-1/4">
-      <CategorySearchBar v-model="searchInfo" />
-    </div>
-    <div class="w-3/4">
-      <h1 class="text-5xl font-extrabold uppercase">
-        {{ category?.name }}
-      </h1>
-      <div class="grid gap-6 grid-cols-4 py-10">
-        <template v-if="validProducts.length > 0">
-          <div v-for="product in validProducts" :key="product.id">
-            <ProductCard :product="product" />
-          </div>
-        </template>
+  <div ref="collectionRef" class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:space-x-8">
+      <div class="w-full md:w-1/4 mb-6 md:mb-0">
+        <CategorySearchBar v-model="searchInfo" class="sticky top-4" />
+      </div>
+      <div class="w-full md:w-3/4">
+        <h1
+          class="text-3xl sm:text-4xl lg:text-5xl font-extrabold uppercase mb-6 sm:mb-8"
+        >
+          {{ category?.name }}
+        </h1>
+        <div
+          class="grid gap-4 sm:gap-6 lg:gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 py-6 sm:py-8 lg:py-10"
+        >
+          <template v-if="validProducts.length > 0">
+            <div v-for="product in validProducts" :key="product.id">
+              <ProductCard :product="product" />
+            </div>
+          </template>
 
-        <template v-if="isLoading">
-          <ProductCardSkeleton v-for="i in 4" :key="i" class="h-60 w-52" />
-        </template>
+          <template v-if="isLoading">
+            <ProductCardSkeleton
+              v-for="i in 4"
+              :key="i"
+              class="h-48 sm:h-52 lg:h-60 w-full"
+            />
+          </template>
+        </div>
       </div>
     </div>
   </div>
 </template>
-
 <script setup lang="ts">
 import ProductCard from '~/components/product/ProductCard.vue'
 import type { Tables } from '~/types/database.types'
