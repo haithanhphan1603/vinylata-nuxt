@@ -55,6 +55,7 @@ const searchInfo = reactive({
 })
 
 const PRODUCTS_CATEGORIES = 'products_categories'
+const PRODUCTS = 'products'
 
 const validProducts = computed(() =>
   products.value.filter((product) => product && product.id != null),
@@ -89,12 +90,15 @@ async function fetchProducts() {
   }
 
   isLoading.value = true
-  let query = supabase
-    .from(PRODUCTS_CATEGORIES)
-    .select('products(*,vendors(name))')
+  let query
 
   if (slug !== 'all') {
-    query = query.eq('categoryId', category.value?.id ?? 0)
+    query = supabase
+      .from(PRODUCTS_CATEGORIES)
+      .select('products(*,vendors(name))')
+      .eq('categoryId', category.value?.id ?? 0)
+  } else {
+    query = supabase.from(PRODUCTS).select('*')
   }
 
   query = query.range(searchInfo.start, searchInfo.end)
@@ -141,7 +145,8 @@ async function fetchProducts() {
   if (error) {
     console.error(error)
   } else {
-    const fetchedProducts = data.map((item: any) => item.products)
+    const fetchedProducts =
+      slug !== 'all' ? data.map((item: any) => item.products) : data
     products.value = [...products.value, ...fetchedProducts]
     isLoading.value = false
   }
