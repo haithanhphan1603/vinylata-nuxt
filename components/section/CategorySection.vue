@@ -32,12 +32,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useToast } from '../ui/toast/use-toast'
-import Toaster from '../ui/toast/Toaster.vue'
 import AspectRatio from '../ui/aspect-ratio/AspectRatio.vue'
 
 const supabase = useSupabaseClient()
-const { toast } = useToast()
 
 interface Category {
   id: number
