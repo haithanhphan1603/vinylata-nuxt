@@ -83,7 +83,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <Card class="w-1/2 my-10 border-0">
+  <Card class="w-full lg:w-1/2 lg:my-10 my-4 border-0">
     <CardHeader>
       <CardTitle class="uppercase text-3xl">
         {{ isLogin ? 'Login into' : 'Sign up for' }}
@@ -98,7 +98,7 @@ watchEffect(() => {
       </CardDescription>
     </CardHeader>
     <CardContent>
-      <form @submit="onSubmit">
+      <form class="space-y-6" @submit="onSubmit">
         <div class="grid w-full items-center gap-4">
           <div class="flex flex-col space-y-1.5">
             <Label for="email">Email</Label>
@@ -107,6 +107,7 @@ watchEffect(() => {
               v-model="email"
               placeholder="Email"
               type="email"
+              class="w-full"
             />
             <span v-if="errors.email" class="text-sm text-red-500">{{
               errors.email
@@ -119,6 +120,7 @@ watchEffect(() => {
               v-model="password"
               placeholder="Password"
               type="password"
+              class="w-full"
             />
             <span v-if="errors.password" class="text-sm text-red-500">{{
               errors.password
@@ -131,6 +133,7 @@ watchEffect(() => {
               v-model="confirmPassword"
               placeholder="Confirm Password"
               type="password"
+              class="w-full"
             />
             <span v-if="errors.confirmPassword" class="text-sm text-red-500">{{
               errors.confirmPassword
@@ -141,10 +144,12 @@ watchEffect(() => {
       </form>
     </CardContent>
     <CardFooter class="flex flex-col space-y-4">
-      <Button class="w-full" type="submit" @click="onSubmit">
+      <Button class="w-full lg:w-auto" type="submit" @click="onSubmit">
         {{ isLogin ? 'Login' : 'Sign Up' }}
       </Button>
-      <div class="flex justify-between w-full">
+      <div
+        class="flex flex-col lg:flex-row justify-between w-full space-y-4 lg:space-y-0"
+      >
         <CommonAppLink v-if="isLogin" to="/auth/forget-password">
           Forgot Password?
         </CommonAppLink>
