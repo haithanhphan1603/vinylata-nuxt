@@ -10,6 +10,32 @@
         >
           {{ category?.name }}
         </h1>
+        <Separator />
+        <div class="flex items-center justify-between my-2">
+          <span class="text-xl font-normal italic">
+            {{ totalProducts }} Products
+          </span>
+
+          <Select v-model="searchInfo.limit">
+            <SelectTrigger class="w-[60px]">
+              <SelectValue :placeholder="searchInfo.limit" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <!-- Use v-for to generate options from the array -->
+                <SelectItem
+                  v-for="option in paginationOptions"
+                  :key="option"
+                  :value="option"
+                >
+                  {{ option }}
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        <Separator />
+
         <div
           class="grid gap-4 sm:gap-6 lg:gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 py-6 sm:py-8 lg:py-10"
         >
@@ -37,6 +63,19 @@ import type { Tables } from '~/types/database.types'
 import type { CollectionSearchParams } from '~/types/search.types'
 import { SortBy } from '~/types/search.types'
 import { useApiServices } from '~/composables/apiServices'
+import { Separator } from '~/components/ui/separator'
+
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '~/components/ui/select'
+
+// Array of pagination options
+const paginationOptions = [4, 8, 12, 16, 20]
 
 const supabase = useSupabaseClient()
 const slug = useRoute().params.slug
@@ -52,7 +91,7 @@ const isLoading = ref(false)
 
 const searchInfo = reactive<CollectionSearchParams>({
   start: 0,
-  limit: 10,
+  limit: 8,
   sortBy: SortBy.MANUAL,
   productType: [],
 })
@@ -113,7 +152,11 @@ function handleScroll(_e: Event) {
 const debouncedHandleScroll = useDebounce(handleScroll, 300)
 
 watch(
-  [() => searchInfo.productType, () => searchInfo.sortBy],
+  [
+    () => searchInfo.productType,
+    () => searchInfo.sortBy,
+    () => searchInfo.limit,
+  ],
   async () => {
     products.value = [] // Reset products array
     searchInfo.start = 0
