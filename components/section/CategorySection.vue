@@ -1,8 +1,5 @@
 <template>
   <section>
-    <ClientOnly>
-      <Toaster />
-    </ClientOnly>
     <div
       class="grid grid-cols-2 lg:grid-cols-3 gap-1 sm:gap-6 lg:gap-4 mt-4 sm:mt-6 lg:mt-8"
     >
@@ -59,11 +56,6 @@ async function fetchSampleCategories() {
     .limit(6)
   if (error) {
     console.log(error)
-    toast({
-      title: 'Uh oh! Something went wrong.',
-      description: 'There was a problem with your request.',
-      variant: 'destructive',
-    })
   } else {
     categories.value = data
   }
