@@ -40,8 +40,7 @@ import { useApiServices } from '~/composables/apiServices'
 
 const supabase = useSupabaseClient()
 const slug = useRoute().params.slug
-const { getProductsByCategory, getCategoryBySlug, getTotalProductsByCategory } =
-  useApiServices()
+const { getProductsByCategory, getTotalProductsByCategory } = useApiServices()
 
 const collectionRef = ref<HTMLElement | null>(null)
 
@@ -136,5 +135,3 @@ onUnmounted(() => {
   window.removeEventListener('scroll', debouncedHandleScroll)
 })
 </script>
-
-<style scoped></style>

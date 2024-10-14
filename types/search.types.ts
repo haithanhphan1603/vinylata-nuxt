@@ -1,3 +1,5 @@
+import type { Enums } from './database.types'
+
 export enum SortBy {
   MANUAL = 'manual',
   PRICE_ASC = 'price_asc',
@@ -11,5 +13,5 @@ export interface CollectionSearchParams {
   start: number
   limit: number
   sortBy: SortBy
-  productType: []
+  productType: Enums<'productType'>[]
 }

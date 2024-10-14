@@ -77,17 +77,10 @@ import {
 } from '@/components/ui/accordion'
 import RadioGroup from '../ui/radio-group/RadioGroup.vue'
 import RadioGroupItem from '../ui/radio-group/RadioGroupItem.vue'
-import { SortBy } from '~/types/search.types'
-
-interface SearchInfo {
-  productType: Enums<'productType'>[]
-  sortBy: string
-  start: number
-  end: number
-}
+import { SortBy, type CollectionSearchParams } from '~/types/search.types'
 
 const searchInfo = defineModel({
-  type: Object as () => SearchInfo,
+  type: Object as () => CollectionSearchParams,
   required: true,
 })
 

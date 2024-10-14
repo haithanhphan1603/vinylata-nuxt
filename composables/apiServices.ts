@@ -29,27 +29,27 @@ export const useApiServices = () => {
     // Add sorting logic
     switch (searchInfo.sortBy) {
       case SortBy.PRICE_ASC:
-        query = query.order('products.unitPrice', {
+        query = query.order('products(unitPrice)', {
           ascending: true,
         })
         break
       case SortBy.PRICE_DESC:
-        query = query.order('products.unitPrice', {
+        query = query.order('products(unitPrice)', {
           ascending: false,
         })
         break
       case SortBy.NAME_ASC:
-        query = query.order('products.name', {
+        query = query.order('products(name)', {
           ascending: true,
         })
         break
       case SortBy.NAME_DESC:
-        query = query.order('products.name', {
+        query = query.order('products(name)', {
           ascending: false,
         })
         break
       case SortBy.CREATED_AT_DESC:
-        query = query.order('products.createdAt', {
+        query = query.order('products(createdAt)', {
           ascending: false,
         })
         break
