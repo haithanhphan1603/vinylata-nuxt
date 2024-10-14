@@ -55,24 +55,12 @@ const searchInfo = reactive({
 })
 
 const PRODUCTS_CATEGORIES = 'products_categories'
-const PRODUCTS = 'products'
 
 const validProducts = computed(() =>
   products.value.filter((product) => product && product.id != null),
 )
 
 async function fetchCategory() {
-  if (slug === 'all') {
-    category.value = {
-      name: 'All',
-      id: 0,
-      slug: 'all',
-      backgroundImage: '',
-      description: '',
-    }
-    return
-  }
-
   const { data, error } = await supabase
     .from('categories')
     .select('*')
@@ -92,14 +80,10 @@ async function fetchProducts() {
   isLoading.value = true
   let query
 
-  if (slug !== 'all') {
-    query = supabase
-      .from(PRODUCTS_CATEGORIES)
-      .select('products(*,vendors(name))')
-      .eq('categoryId', category.value?.id ?? 0)
-  } else {
-    query = supabase.from(PRODUCTS).select('*')
-  }
+  query = supabase
+    .from(PRODUCTS_CATEGORIES)
+    .select('products(*,vendors(name))')
+    .eq('categoryId', category.value?.id ?? 0)
 
   query = query.range(searchInfo.start, searchInfo.end)
 
@@ -145,8 +129,7 @@ async function fetchProducts() {
   if (error) {
     console.error(error)
   } else {
-    const fetchedProducts =
-      slug !== 'all' ? data.map((item: any) => item.products) : data
+    const fetchedProducts = data.map((item: any) => item.products)
     products.value = [...products.value, ...fetchedProducts]
     isLoading.value = false
   }
@@ -162,9 +145,7 @@ async function fetchTotalProducts() {
     `,
     { count: 'exact' },
   )
-  if (slug !== 'all') {
-    query = query.eq('categoryId', category.value?.id ?? 0)
-  }
+  query = query.eq('categoryId', category.value?.id ?? 0)
 
   if (searchInfo.productType.length > 0) {
     query = query.in('products.productType', searchInfo.productType)
