@@ -6,3 +6,10 @@ export enum SortBy {
   NAME_DESC = 'name_desc',
   CREATED_AT_DESC = 'created_at_desc',
 }
+
+export interface CollectionSearchParams {
+  start: number
+  limit: number
+  sortBy: SortBy
+  productType: []
+}
