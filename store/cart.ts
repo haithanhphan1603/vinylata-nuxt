@@ -46,7 +46,7 @@ export const useCartStore = defineStore(
       }
 
       // Update cart items in database
-      const { error: itemsError } = await supabase.from('cartItem').insert(
+      const { error: itemsError } = await supabase.from('cartItem').upsert(
         cartItems.value.map((item) => ({
           ...item,
           cartId: cart.value!.id,
@@ -178,13 +178,19 @@ export const useCartStore = defineStore(
     }
 
     // Watch for user changes
-    watch(user, (newUser) => {
-      if (newUser) {
-        syncCartWithUser()
-      } else {
-        clearCart()
-      }
-    })
+    watch(
+      user,
+      (newUser) => {
+        if (newUser) {
+          syncCartWithUser()
+        } else {
+          clearCart()
+        }
+      },
+      {
+        immediate: true,
+      },
+    )
 
     return {
       cartItems,
