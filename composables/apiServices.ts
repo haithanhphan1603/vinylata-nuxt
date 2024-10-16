@@ -18,6 +18,7 @@ export const useApiServices = () => {
       .from(PRODUCTS_CATEGORIES)
       .select('products(*,vendors(name))')
       .eq('categoryId', categoryId)
+      .not('products(id)', 'is', null)
 
     query = query.range(
       searchInfo.start,
