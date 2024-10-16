@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     'nuxt-swiper',
     '@pinia-plugin-persistedstate/nuxt',
     'radix-vue/nuxt',
+    '@vee-validate/nuxt',
   ],
 
   supabase: {

@@ -4,6 +4,8 @@ import { SortBy } from '~/types/search.types'
 
 const PRODUCTS_CATEGORIES = 'products_categories'
 type Product = Tables<'products'>
+type CartItem = Tables<'cartItem'>
+type Cart = Tables<'cart'>
 
 export const useApiServices = () => {
   const supabase = useSupabaseClient()
@@ -16,6 +18,7 @@ export const useApiServices = () => {
       .from(PRODUCTS_CATEGORIES)
       .select('products(*,vendors(name))')
       .eq('categoryId', categoryId)
+      .not('products(id)', 'is', null)
 
     query = query.range(
       searchInfo.start,
@@ -110,9 +113,49 @@ export const useApiServices = () => {
     return count
   }
 
+  async function deleteCart(cartId: string) {
+    const { error: itemsError } = await supabase
+      .from('cartItem')
+      .delete()
+      .eq('cartId', cartId)
+    if (itemsError) {
+      throw itemsError
+    }
+  }
+
+  async function deleteCartItems(cartId: string) {
+    const { error: cartError } = await supabase
+      .from('cart')
+      .delete()
+      .eq('id', cartId)
+    if (cartError) {
+      throw cartError
+    }
+  }
+
+  async function updateCartItems(cartItems: CartItem[]) {
+    const { error: itemsError } = await supabase
+      .from('cartItem')
+      .upsert(cartItems)
+    if (itemsError) {
+      throw itemsError
+    }
+  }
+
+  async function updateCart(cart: Cart) {
+    const { error: cartError } = await supabase.from('cart').upsert([cart])
+    if (cartError) {
+      throw cartError
+    }
+  }
+
   return {
     getProductsByCategory,
     getCategoryBySlug,
     getTotalProductsByCategory,
+    deleteCart,
+    deleteCartItems,
+    updateCartItems,
+    updateCart,
   }
 }

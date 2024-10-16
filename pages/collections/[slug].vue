@@ -39,8 +39,8 @@
         <div
           class="grid gap-4 sm:gap-6 lg:gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 py-6 sm:py-8 lg:py-10"
         >
-          <template v-if="validProducts.length > 0">
-            <div v-for="product in validProducts" :key="product.id">
+          <template v-if="products.length > 0">
+            <div v-for="product in products" :key="product.id">
               <ProductCard :product="product" />
             </div>
           </template>
@@ -95,10 +95,6 @@ const searchInfo = reactive<CollectionSearchParams>({
   sortBy: SortBy.MANUAL,
   productType: [],
 })
-
-const validProducts = computed(() =>
-  products.value.filter((product) => product && product.id != null),
-)
 
 async function fetchCategory() {
   const { data, error } = await supabase
