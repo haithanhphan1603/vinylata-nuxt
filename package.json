@@ -9,7 +9,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint . --ext .ts,.vue",
-    "update-types": "npx supabase gen types --lang=typescript --project-id \"agkajtjnmvpxvycwpvrz\" > database.types.ts"
+    "update-types": "npx supabase gen types --lang=typescript --project-id \"agkajtjnmvpxvycwpvrz\" > types/database.types.ts"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.5.1",
@@ -54,6 +54,7 @@
     "prettier": "^3.2.5",
     "sass": "^1.77.8",
     "shadcn-nuxt": "^0.10.4",
+    "supabase": "^1.204.3",
     "typescript": "^5.4.5"
   }
 }
