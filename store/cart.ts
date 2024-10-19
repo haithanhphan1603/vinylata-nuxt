@@ -139,7 +139,7 @@ export const useCartStore = defineStore(
         const { data: existingCart, error: fetchError } = await supabase
           .from('cart')
           .select('*')
-          .eq('createdby', user.value.id)
+          .eq('createdby', user.value?.id)
           .order('updatedat', { ascending: false })
           .limit(1)
           .single()

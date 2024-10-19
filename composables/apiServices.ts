@@ -149,6 +149,34 @@ export const useApiServices = () => {
     }
   }
 
+  async function getWishlistItems(userId: string) {
+    const { data, error } = await supabase
+      .from('wishlist')
+      .select('*')
+      .eq('user_id', userId)
+    if (error) {
+      console.error(error)
+      return []
+    }
+    return data
+  }
+
+  async function deleteWishlistItemApi(id: number) {
+    const { error } = await supabase.from('wishlist').delete().eq('id', id)
+    if (error) {
+      console.error('Error deleting wishlist item:', error)
+    }
+  }
+
+  async function addToWishlistApi(userId: string, productId: number) {
+    const { error } = await supabase
+      .from('wishlist')
+      .insert([{ user_id: userId, product_id: productId }])
+    if (error) {
+      console.error('Error adding to wishlist:', error)
+    }
+  }
+
   return {
     getProductsByCategory,
     getCategoryBySlug,
@@ -157,5 +185,8 @@ export const useApiServices = () => {
     deleteCartItems,
     updateCartItems,
     updateCart,
+    getWishlistItems,
+    deleteWishlistItemApi,
+    addToWishlistApi,
   }
 }
