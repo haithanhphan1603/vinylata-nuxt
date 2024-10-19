@@ -161,8 +161,13 @@ export const useApiServices = () => {
     return data
   }
 
-  async function deleteWishlistItemApi(id: number) {
-    const { error } = await supabase.from('wishlist').delete().eq('id', id)
+  async function deleteWishlistItemApi(userId: string, productId: number) {
+    const { error } = await supabase
+      .from('wishlist')
+      .delete()
+      .eq('user_id', userId)
+      .eq('product_id', productId)
+
     if (error) {
       console.error('Error deleting wishlist item:', error)
     }
