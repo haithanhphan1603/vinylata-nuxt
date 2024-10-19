@@ -18,10 +18,10 @@
         </Button>
         <button
           class="absolute top-2 right-2 p-1 sm:p-2 bg-transparent hover:bg-none"
-          @click.stop.prevent="addToWishList"
+          @click.stop.prevent="toggleWishList"
         >
           <HeartIcon
-            v-if="!isOnWishlist"
+            v-if="!isOnWishList"
             :height="isMobile ? '1.25rem' : '1.75rem'"
             :width="isMobile ? '1.25rem' : '1.75rem'"
             :color="heartIconColor"
@@ -66,6 +66,7 @@ import AspectRatio from '../ui/aspect-ratio/AspectRatio.vue'
 import { useElementHover, useWindowSize } from '@vueuse/core'
 import { HeartIcon, Loader } from 'lucide-vue-next'
 import { useCartStore } from '~/store/cart'
+import { useWishlistStore } from '~/store/wishlist'
 import type { Tables } from '~/types/database.types'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -82,12 +83,15 @@ interface Props {
 const props = defineProps<Props>()
 
 const cartStore = useCartStore()
+const wishlistStore = useWishlistStore()
+
+const { wishlist } = storeToRefs(wishlistStore)
 
 const myHoverableElement = ref<HTMLElement | null>(null)
 const isHovered = useElementHover(myHoverableElement)
-const isOnWishlist = ref(false)
 const isLoading = ref(false)
 const colorMode = useColorMode()
+const isOnWishList = ref(false)
 
 const { width } = useWindowSize()
 const isMobile = computed(() => width.value < 640)
@@ -96,8 +100,23 @@ const heartIconColor = computed(() => {
   return colorMode.value === 'light' ? '#2d2d2d' : '#FFFFFF'
 })
 
+const throttleAddToWishList = useThrottleFn(addToWishList, 400)
+const throttleRemoveFromWishList = useThrottleFn(removeFromWishList, 400)
+
+function toggleWishList() {
+  if (isOnWishList.value) {
+    throttleRemoveFromWishList()
+  } else {
+    throttleAddToWishList()
+  }
+}
+
 function addToWishList() {
-  isOnWishlist.value = !isOnWishlist.value
+  wishlistStore.addToWishlist(props.product.id)
+}
+
+function removeFromWishList() {
+  wishlistStore.removeFromWishList(props.product.id)
 }
 
 function addToCart() {
@@ -112,6 +131,16 @@ function addToCart() {
   cartStore.addToCart(cartItem)
   isLoading.value = false
 }
+
+watch(
+  wishlist,
+  () => {
+    isOnWishList.value = wishlist.value.some(
+      (item) => item.product_id === props.product.id,
+    )
+  },
+  { deep: true },
+)
 </script>
 
 <style scoped></style>

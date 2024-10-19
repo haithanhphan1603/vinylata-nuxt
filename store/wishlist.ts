@@ -1,41 +1,40 @@
-type WishlistItem = {
-  userId: string
-  productId: number
-}
-export const useMyWishlistStore = defineStore('wishlist', () => {
+import type { Tables } from '~/types/database.types'
+
+type WishlistItem = Tables<'wishlist'>
+export const useWishlistStore = defineStore('wishlist', () => {
   const wishlist = ref<WishlistItem[]>([])
   const user = useSupabaseUser()
 
   const { addToWishlistApi, deleteWishlistItemApi, getWishlistItems } =
     useApiServices()
 
-  function addToWishlist(productId: number) {
+  async function addToWishlist(productId: number) {
     if (!user.value) return
-    const wishtListClone = [...wishlist.value]
-    wishtListClone.push({ userId: user.value.id, productId })
-    addToWishlistApi(user.value.id, productId)
-    wishlist.value = wishtListClone
+    await addToWishlistApi(user.value.id, productId)
+    wishlist.value = await getWishlistItems(user.value.id)
   }
 
-  function deleteWishlistItem(idx: number) {
+  async function removeFromWishList(id: number) {
     if (!user.value) return
-    const wishtListClone = [...wishlist.value]
-    const productId = wishtListClone[idx].productId
-    wishtListClone.splice(idx, 1)
-    deleteWishlistItemApi(productId)
+    await deleteWishlistItemApi(user.value.id, id)
+    wishlist.value = await getWishlistItems(user.value.id)
   }
 
-  watch(user, async (newUser) => {
-    if (newUser) {
-      wishlist.value = await getWishlistItems(newUser.id)
-    } else {
-      wishlist.value = []
-    }
-  })
+  watch(
+    user,
+    async (newUser) => {
+      if (newUser) {
+        wishlist.value = await getWishlistItems(newUser.id)
+      } else {
+        wishlist.value = []
+      }
+    },
+    { immediate: true },
+  )
 
   return {
     wishlist,
     addToWishlist,
-    deleteWishlistItem,
+    removeFromWishList,
   }
 })
