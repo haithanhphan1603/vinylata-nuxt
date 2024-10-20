@@ -16,26 +16,37 @@
           <div>Add to cart</div>
           <Loader v-if="isLoading" class="ml-2 h-4 w-4" />
         </Button>
-        <button
-          class="absolute top-2 right-2 p-1 sm:p-2 bg-transparent hover:bg-none"
-          @click.stop.prevent="toggleWishList"
-        >
-          <HeartIcon
-            v-if="!isOnWishList"
-            :height="isMobile ? '1.25rem' : '1.75rem'"
-            :width="isMobile ? '1.25rem' : '1.75rem'"
-            :color="heartIconColor"
-            stroke-width="1.5"
-          />
-          <HeartIcon
-            v-else
-            :height="isMobile ? '1.25rem' : '1.75rem'"
-            :width="isMobile ? '1.25rem' : '1.75rem'"
-            color="#4f46e5"
-            fill="#4f46e5"
-            stroke-width="1.5"
-          />
-        </button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger as-child>
+              <button
+                class="absolute top-2 right-2 p-1 sm:p-2 bg-transparent hover:bg-none"
+                @click.stop.prevent="toggleWishList"
+              >
+                <HeartIcon
+                  v-if="!isOnWishList"
+                  :height="isMobile ? '1.25rem' : '1.75rem'"
+                  :width="isMobile ? '1.25rem' : '1.75rem'"
+                  :color="heartIconColor"
+                  stroke-width="1.5"
+                />
+                <HeartIcon
+                  v-else
+                  :height="isMobile ? '1.25rem' : '1.75rem'"
+                  :width="isMobile ? '1.25rem' : '1.75rem'"
+                  color="#4f46e5"
+                  fill="#4f46e5"
+                  stroke-width="1.5"
+                />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <span>{{
+                isOnWishList ? 'Remove from wishlist' : 'Add to wishlist'
+              }}</span>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </NuxtLink>
     </div>
     <CommonAppLink
@@ -69,6 +80,12 @@ import { useCartStore } from '~/store/cart'
 import { useWishlistStore } from '~/store/wishlist'
 import type { Tables } from '~/types/database.types'
 import { v4 as uuidv4 } from 'uuid'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 
 type Product = Tables<'products'> & {
   vendors: { name: string }

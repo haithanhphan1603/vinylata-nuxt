@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useForm, useField } from 'vee-validate'
 import * as yup from 'yup'
 import { Button } from '@/components/ui/button'
@@ -26,6 +26,8 @@ const loginSchema = yup.object({
 })
 
 const signupSchema = loginSchema.shape({
+  firstName: yup.string().required('First name is required'),
+  lastName: yup.string().required('Last name is required'),
   confirmPassword: yup
     .string()
     .required('Confirm password is required')
@@ -41,6 +43,8 @@ const { handleSubmit, errors, resetForm } = useForm({
 const { value: email } = useField<string>('email')
 const { value: password } = useField<string>('password')
 const { value: confirmPassword } = useField<string>('confirmPassword')
+const { value: firstName } = useField<string>('firstName')
+const { value: lastName } = useField<string>('lastName')
 
 const onSubmit = handleSubmit(async (values) => {
   try {
@@ -56,6 +60,10 @@ const onSubmit = handleSubmit(async (values) => {
         password: values.password,
         options: {
           emailRedirectTo: redirectTo,
+          data: {
+            firstName: values.firstName,
+            lastName: values.lastName,
+          },
         },
       })
     }
@@ -100,6 +108,32 @@ watchEffect(() => {
     <CardContent>
       <form class="space-y-6" @submit="onSubmit">
         <div class="grid w-full items-center gap-4">
+          <div v-if="!isLogin" class="flex flex-col space-y-1.5">
+            <Label for="firstName">First Name</Label>
+            <Input
+              id="firstName"
+              v-model="firstName"
+              placeholder="First Name"
+              type="text"
+              class="w-full"
+            />
+            <span v-if="errors.firstName" class="text-sm text-red-500">{{
+              errors.firstName
+            }}</span>
+          </div>
+          <div v-if="!isLogin" class="flex flex-col space-y-1.5">
+            <Label for="lastName">Last Name</Label>
+            <Input
+              id="lastName"
+              v-model="lastName"
+              placeholder="Last Name"
+              type="text"
+              class="w-full"
+            />
+            <span v-if="errors.lastName" class="text-sm text-red-500">{{
+              errors.lastName
+            }}</span>
+          </div>
           <div class="flex flex-col space-y-1.5">
             <Label for="email">Email</Label>
             <Input
@@ -126,6 +160,7 @@ watchEffect(() => {
               errors.password
             }}</span>
           </div>
+
           <div v-if="!isLogin" class="flex flex-col space-y-1.5">
             <Label for="confirmPassword">Confirm Password</Label>
             <Input
