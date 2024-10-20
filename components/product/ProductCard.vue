@@ -67,6 +67,7 @@
     <p class="text-base font-semibold text-slate-600 dark:text-slate-300 mt-0">
       {{ product.currency }}{{ product.unitPrice }}
     </p>
+    <DialogAuthDialog v-model="isDialogOpen" />
   </Card>
 </template>
 
@@ -101,6 +102,7 @@ const props = defineProps<Props>()
 
 const cartStore = useCartStore()
 const wishlistStore = useWishlistStore()
+const user = useSupabaseUser()
 
 const { wishlist } = storeToRefs(wishlistStore)
 
@@ -109,6 +111,7 @@ const isHovered = useElementHover(myHoverableElement)
 const isLoading = ref(false)
 const colorMode = useColorMode()
 const isOnWishList = ref(false)
+const isDialogOpen = ref(false)
 
 const { width } = useWindowSize()
 const isMobile = computed(() => width.value < 640)
@@ -121,6 +124,10 @@ const throttleAddToWishList = useThrottleFn(addToWishList, 400)
 const throttleRemoveFromWishList = useThrottleFn(removeFromWishList, 400)
 
 function toggleWishList() {
+  if (!user.value) {
+    isDialogOpen.value = true
+    return
+  }
   if (isOnWishList.value) {
     throttleRemoveFromWishList()
   } else {
@@ -156,7 +163,7 @@ watch(
       (item) => item.product_id === props.product.id,
     )
   },
-  { deep: true },
+  { deep: true, immediate: true },
 )
 </script>
 

@@ -179,7 +179,7 @@ watchEffect(() => {
       </form>
     </CardContent>
     <CardFooter class="flex flex-col space-y-4">
-      <Button class="w-full lg:w-auto" type="submit" @click="onSubmit">
+      <Button class="w-full" type="submit" @click="onSubmit">
         {{ isLogin ? 'Login' : 'Sign Up' }}
       </Button>
       <div
