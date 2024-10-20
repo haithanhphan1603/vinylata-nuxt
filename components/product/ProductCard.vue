@@ -16,26 +16,37 @@
           <div>Add to cart</div>
           <Loader v-if="isLoading" class="ml-2 h-4 w-4" />
         </Button>
-        <button
-          class="absolute top-2 right-2 p-1 sm:p-2 bg-transparent hover:bg-none"
-          @click.stop.prevent="toggleWishList"
-        >
-          <HeartIcon
-            v-if="!isOnWishList"
-            :height="isMobile ? '1.25rem' : '1.75rem'"
-            :width="isMobile ? '1.25rem' : '1.75rem'"
-            :color="heartIconColor"
-            stroke-width="1.5"
-          />
-          <HeartIcon
-            v-else
-            :height="isMobile ? '1.25rem' : '1.75rem'"
-            :width="isMobile ? '1.25rem' : '1.75rem'"
-            color="#4f46e5"
-            fill="#4f46e5"
-            stroke-width="1.5"
-          />
-        </button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger as-child>
+              <button
+                class="absolute top-2 right-2 p-1 sm:p-2 bg-transparent hover:bg-none"
+                @click.stop.prevent="toggleWishList"
+              >
+                <HeartIcon
+                  v-if="!isOnWishList"
+                  :height="isMobile ? '1.25rem' : '1.75rem'"
+                  :width="isMobile ? '1.25rem' : '1.75rem'"
+                  :color="heartIconColor"
+                  stroke-width="1.5"
+                />
+                <HeartIcon
+                  v-else
+                  :height="isMobile ? '1.25rem' : '1.75rem'"
+                  :width="isMobile ? '1.25rem' : '1.75rem'"
+                  color="#4f46e5"
+                  fill="#4f46e5"
+                  stroke-width="1.5"
+                />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <span>{{
+                isOnWishList ? 'Remove from wishlist' : 'Add to wishlist'
+              }}</span>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </NuxtLink>
     </div>
     <CommonAppLink
@@ -56,6 +67,7 @@
     <p class="text-base font-semibold text-slate-600 dark:text-slate-300 mt-0">
       {{ product.currency }}{{ product.unitPrice }}
     </p>
+    <DialogAuthDialog v-model="isDialogOpen" />
   </Card>
 </template>
 
@@ -69,6 +81,12 @@ import { useCartStore } from '~/store/cart'
 import { useWishlistStore } from '~/store/wishlist'
 import type { Tables } from '~/types/database.types'
 import { v4 as uuidv4 } from 'uuid'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 
 type Product = Tables<'products'> & {
   vendors: { name: string }
@@ -84,6 +102,7 @@ const props = defineProps<Props>()
 
 const cartStore = useCartStore()
 const wishlistStore = useWishlistStore()
+const user = useSupabaseUser()
 
 const { wishlist } = storeToRefs(wishlistStore)
 
@@ -92,6 +111,7 @@ const isHovered = useElementHover(myHoverableElement)
 const isLoading = ref(false)
 const colorMode = useColorMode()
 const isOnWishList = ref(false)
+const isDialogOpen = ref(false)
 
 const { width } = useWindowSize()
 const isMobile = computed(() => width.value < 640)
@@ -104,6 +124,10 @@ const throttleAddToWishList = useThrottleFn(addToWishList, 400)
 const throttleRemoveFromWishList = useThrottleFn(removeFromWishList, 400)
 
 function toggleWishList() {
+  if (!user.value) {
+    isDialogOpen.value = true
+    return
+  }
   if (isOnWishList.value) {
     throttleRemoveFromWishList()
   } else {
@@ -139,7 +163,7 @@ watch(
       (item) => item.product_id === props.product.id,
     )
   },
-  { deep: true },
+  { deep: true, immediate: true },
 )
 </script>
 
