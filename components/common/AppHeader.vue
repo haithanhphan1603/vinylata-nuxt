@@ -5,11 +5,13 @@ import {
   CircleUserRoundIcon,
   MenuIcon,
   XIcon,
+  HeartIcon,
 } from 'lucide-vue-next'
 import { useCartStore } from '~/store/cart'
 
 const searchKey = ref('')
 const mobileMenuOpen = ref(false)
+const user = useSupabaseUser()
 
 const links = ref([
   { to: '/', label: 'HOME' },
@@ -32,6 +34,18 @@ const hideMiniCart = () => {
 const toggleMobileMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value
 }
+
+const navigateToUser = () => {
+  if (user.value) {
+    navigateTo('/profile')
+  } else {
+    navigateTo('/auth')
+  }
+}
+
+const navigateToWishlist = () => {
+  navigateTo('/wishlist')
+}
 </script>
 
 <template>
@@ -47,11 +61,24 @@ const toggleMobileMenu = () => {
         <div class="flex items-center">
           <ul class="flex gap-1 items-center">
             <li class="hidden sm:block">
-              <div class="p-2 hover:text-violet-600 cursor-pointer">
+              <div
+                class="p-2 hover:text-violet-600 cursor-pointer"
+                @click="navigateToWishlist"
+              >
+                <HeartIcon class="sm:h-5 sm:w-5" />
+                <span class="sr-only">Wishlist</span>
+              </div>
+            </li>
+            <li class="hidden sm:block">
+              <div
+                class="p-2 hover:text-violet-600 cursor-pointer"
+                @click="navigateToUser"
+              >
                 <CircleUserRoundIcon class="sm:h-5 sm:w-5" />
                 <span class="sr-only">Profile</span>
               </div>
             </li>
+
             <li
               class="relative"
               @mouseenter.stop="showMiniCart"
@@ -73,7 +100,7 @@ const toggleMobileMenu = () => {
               />
             </li>
             <li>
-              <CommonAppColorMode />
+              <CommonAppColorMode class="p-2" />
             </li>
             <li class="sm:hidden">
               <button
