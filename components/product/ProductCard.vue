@@ -110,7 +110,9 @@ const myHoverableElement = ref<HTMLElement | null>(null)
 const isHovered = useElementHover(myHoverableElement)
 const isLoading = ref(false)
 const colorMode = useColorMode()
-const isOnWishList = ref(false)
+const isOnWishList = computed(() =>
+  wishlist.value.some((w) => w.product_id === props.product.id),
+)
 const isDialogOpen = ref(false)
 
 const { width } = useWindowSize()
@@ -152,16 +154,6 @@ function addToCart() {
   cartStore.addToCart(cartItem)
   isLoading.value = false
 }
-
-watch(
-  wishlist,
-  () => {
-    isOnWishList.value = wishlist.value.some(
-      (item) => item.product_id === props.product.id,
-    )
-  },
-  { deep: true, immediate: true },
-)
 </script>
 
 <style scoped></style>
