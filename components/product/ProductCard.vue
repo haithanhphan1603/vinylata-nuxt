@@ -120,18 +120,15 @@ const heartIconColor = computed(() => {
   return colorMode.value === 'light' ? '#2d2d2d' : '#FFFFFF'
 })
 
-const throttleAddToWishList = useThrottleFn(addToWishList, 400)
-const throttleRemoveFromWishList = useThrottleFn(removeFromWishList, 400)
-
 function toggleWishList() {
   if (!user.value) {
     isDialogOpen.value = true
     return
   }
   if (isOnWishList.value) {
-    throttleRemoveFromWishList()
+    removeFromWishList()
   } else {
-    throttleAddToWishList()
+    addToWishList()
   }
 }
 
