@@ -113,6 +113,17 @@ export const useApiServices = () => {
     return count
   }
 
+  async function fetchProduct(productId: number) {
+    const { data, error } = await supabase
+      .from('products')
+      .select('name, unitPrice, primaryImage, vendors(name),currency')
+      .eq('id', productId)
+    if (error) {
+      console.error('Error fetching product', error)
+    }
+    return data?.[0]
+  }
+
   async function deleteCart(cartId: string) {
     const { error: itemsError } = await supabase
       .from('cartItem')
@@ -193,5 +204,6 @@ export const useApiServices = () => {
     getWishlistItems,
     deleteWishlistItemApi,
     addToWishlistApi,
+    fetchProduct,
   }
 }

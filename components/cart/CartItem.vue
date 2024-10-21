@@ -5,7 +5,7 @@
         :src="product?.primaryImage as string"
         alt="Product image"
         class="w-40 h-40 object-contain"
-      >
+      />
       <div>
         <h3 class="font-bold">{{ product?.name }}</h3>
         <p class="text-sm text-gray-600">{{ product?.vendors.name }}</p>
@@ -62,9 +62,14 @@ const emit = defineEmits<{
   (e: 'removeItem' | 'decreaseQuantity' | 'increaseQuantity'): void
 }>()
 
-const { fetchProduct, getCartItemPrice, product } = useCart()
+const { getCartItemPrice, product } = useCart()
+const { fetchProduct } = useApiServices()
 
-await fetchProduct(props.item.productId as number)
+async function fetchProductData() {
+  product.value = await fetchProduct(props.item.productId as number)
+}
+
+fetchProductData()
 </script>
 <style lang="scss" scoped>
 .cart-item__circle-x:hover {

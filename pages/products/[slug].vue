@@ -110,7 +110,7 @@ async function fetchProduct(slug: string) {
       variant: 'destructive',
     })
   }
-  product.value = data[0]
+  product.value = data?.[0]
 }
 
 fetchProduct(route.params.slug as string)

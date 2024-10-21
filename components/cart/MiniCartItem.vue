@@ -63,9 +63,14 @@ const emit = defineEmits<{
   (e: 'removeItem' | 'decreaseQuantity' | 'increaseQuantity'): void
 }>()
 
-const { fetchProduct, getCartItemPrice, product } = useCart()
+const { getCartItemPrice, product } = useCart()
+const { fetchProduct } = useApiServices()
 
-await fetchProduct(props.item.productId as number)
+async function fetchProductData() {
+  product.value = await fetchProduct(props.item.productId as number)
+}
+
+fetchProductData()
 </script>
 
 <style scoped></style>
